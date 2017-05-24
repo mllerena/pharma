@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+	
+	<h:panelGrid id="pgGeneral">
+	
+	<h:panelGroup rendered="#{empty taskBean.tasks}">
+      <i>User #{taskBean.user} has no pending tasks.</i>
+    </h:panelGroup>
+    
+    <h:dataTable id="userTasksTable" border="1" rendered="#{not empty taskBean.tasks}"
+                 value="#{taskBean.tasks}" var="_item">
+      <h:column>
+        <f:facet name="header">
+          <h:outputText value="Id" />
+        </f:facet>
+        <h:outputText id="userTaskId" value="#{_item.id}" />
+      </h:column>
+      <h:column>
+        <f:facet name="header">
+          <h:outputText value="Name" />
+        </f:facet>
+        <h:outputText id="taskName" value="#{_item.name}" />
+      </h:column>
+      <h:column>
+        <f:facet name="header">
+          <h:outputText value="Process instance ID" />
+        </f:facet>
+        <h:outputText id="processInstanceId" value="#{_item.processInstanceId}" />
+      </h:column>
+      <h:column>
+        <f:facet name="header">
+          <h:outputText value="Approval" />
+        </f:facet>
+        <!--  <h:link outcome="/approveTask">
+          <f:param name="taskId" value="#{_item.id}" />
+          <f:param name="user" value="#{taskBean.user}" />
+          <h:outputText id="approve" value="Approve" />
+        </h:link> -->
+        
+        <p:commandLink actionListener="#{taskBean.queryTask(_item.id)}" value="Aprobar" update="@form:pgGeneral" >
+        </p:commandLink>
+							
+      </h:column>
+    </h:dataTable>
+    
+    <br clear="all"/>
+    
+    <h:panelGrid columns="2" id="pgDetailTasks" > 
+        <h:panelGroup>Task Id</h:panelGroup>
+        <h:panelGroup>#{taskBean.task.id}</h:panelGroup>
+        <h:panelGroup>Created by</h:panelGroup>
+        <h:panelGroup>#{taskBean.task.taskData.createdBy.id}</h:panelGroup>
+        <h:panelGroup>Task Status</h:panelGroup>
+        <h:panelGroup>#{taskBean.task.taskData.status}</h:panelGroup>
+        <h:panelGroup>Recipient</h:panelGroup>
+        <h:panelGroup>#{taskBean.content.get("in_recipient")}</h:panelGroup>
+        <h:panelGroup>Reward</h:panelGroup>
+        <h:panelGroup>#{taskBean.content.get("in_reward")}</h:panelGroup>
+        <h:panelGroup><h:outputLabel value="Comment" for="commentId"/></h:panelGroup>
+        <h:panelGroup><h:inputText id="commentId" value="#{taskBean.comment}"/></h:panelGroup>
+        
+        
+        <f:facet name="footer">
+      <p:commandButton action="#{taskBean.startTask}" value="Iniciar" update="@form:pgDetailTasks" />
+      
+      <p:commandButton action="#{taskBean.approveTask}" value="Aprobar" update="@form:pgDetailTasks" />  
+        </f:facet>
+        
+      </h:panelGrid>
+      
+      
+	
+	</h:panelGrid>
+  
+  	
+
+</ui:composition>

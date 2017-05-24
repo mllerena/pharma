@@ -1,0 +1,328 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+
+
+
+	<h:panelGrid columns="8">
+	
+		<p:outputLabel value="Orden de fabricación:" for="itOF" />
+		<p:inputText id="itOF" value="#{mProductionController.maWorkrequirement.id}" readonly="true"></p:inputText>  
+
+		<p:outputLabel value="Fecha Movimiento:" for="cDateLaunched" />
+		<p:calendar id="cDateLaunched"
+			value="#{mProductionController.currentEntity.movementdate}"
+			pattern="dd-MM-yyyy" placeholder="dd-MM-yyyy"
+			required="true" requiredMessage="El campo Fecha Movimiento es requerido"
+			>
+			<p:ajax  event="dateSelect" update="cStartDate cEndDate" listener="#{mProductionController.handlerMovementDate()}"></p:ajax> 
+		</p:calendar> 
+
+		<p:outputLabel value="Inicio:" for="cStartDate" />
+		<p:calendar id="cStartDate"
+			value="#{mProductionController.currentEntity.starttime}"
+			required="true" requiredMessage="El campo Inicio es requerido"
+			mindate="#{mProductionController.currentEntity.movementdate}" 
+			pattern="dd/MM/yyyy HH:mm"
+			maxdate="#{mProductionController.endTimeMax}">
+			<p:ajax  event="dateSelect" update="cEndDate" ></p:ajax>   
+		</p:calendar>  
+
+		<p:outputLabel value="Fin:" for="cEndDate" /> 
+		<p:calendar id="cEndDate"
+			value="#{mProductionController.currentEntity.endtime}"
+			pattern="dd/MM/yyyy HH:mm"
+			required="true" requiredMessage="El campo Fin es requerido"
+			mindate="#{mProductionController.currentEntity.starttime}" 
+			maxdate="#{mProductionController.endTimeMax}"
+			disabled="#{mProductionController.currentEntity.starttime eq null}">
+				<p:ajax  event="dateSelect" update="cStartDate" ></p:ajax> 
+		</p:calendar> 
+
+
+	</h:panelGrid>
+
+	<br clear="all"></br>
+
+	<p:accordionPanel id="apFabricacion"
+		rendered="#{bean.currentEntity.id ne null}" multiple="true"> 
+		<p:tab title="Parte de Fabricación">
+
+			<h:panelGrid columns="2">
+
+				<p:outputLabel value="Fase:" for="acFase" />
+				<p:autoComplete id="acFase"
+					value="#{mProductionController.mProductionplan.maWrphaseId}"
+					completeMethod="#{bean.completeFases}" var="mach"
+					itemLabel="#{mach.maProcessId.name}" itemValue="#{mach}"
+					converter="#{maWrphaseConverter}" forceSelection="true"
+					dropdown="true" emptyMessage="No hay datos para mostrar"
+					required="true" requiredMessage="El campo fase es obligatorio"
+					size="70">
+					<p:column>
+						<h:outputText value="#{mach.maProcessId.id}" /> 
+					</p:column>
+		
+					<p:column>
+						<h:outputText value="#{mach.maProcessId.name}" />
+					</p:column> 
+				</p:autoComplete>
+
+				<p:outputLabel value="Versión Centro de costo:"
+					for="acVersionCentroCosto" />
+				<p:autoComplete id="acVersionCentroCosto"
+					value="#{mProductionController.mProductionplan.maCostcenterVersionId}"
+					completeMethod="#{bean.completeVersionCentroCosto}" var="mach"
+					itemLabel="#{mach.documentno} #{mach.maCostcenterId.name}"
+					itemValue="#{mach}" converter="#{maCostcenterVersionConverter}"
+					forceSelection="true" dropdown="true"
+					emptyMessage="No hay datos para mostrar"
+					required="true" requiredMessage="El campo Versión Centro de costo es obligatorio"
+					size="70">
+				</p:autoComplete>
+
+				<p:outputLabel value="Cantidad completada:" for="itQuantityEdit" />
+				<p:inputText id="itQuantityEdit"
+					value="#{mProductionController.mProductionplan.productionqty}" required="true" requiredMessage="El campo Cantidad Completada es obligatorio">
+					<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+				</p:inputText>
+
+				<p:outputLabel value="Cantidad rechazada:"
+					for="itRejectQuantityEdit" />
+				<p:inputText id="itRejectQuantityEdit"
+					value="#{mProductionController.mProductionplan.rejectedquantity}">
+					<f:validateLongRange minimum="0" maximum="99999"></f:validateLongRange>
+				</p:inputText>
+
+				<!-- <p:outputLabel value="Uso de centro de costo:"
+					for="itCostCenterUseEdit" />
+				<p:inputText id="itCostCenterUseEdit"
+					value="#{mProductionController.mProductionplan.maCostcenteruse}">
+				</p:inputText> -->
+
+
+			</h:panelGrid>
+
+		</p:tab>
+		<p:tab title="Detalle parte de fabricación de Fase: #{mProductionController.mProductionplan.maWrphaseId.name}"  >
+
+			<p:tabView id="tvDetParteFabrica">
+				<p:tab title="Herramientas usadas">
+				
+				<pr:dataList id="dlHerramientasWorkEffort"
+						dataList="#{bean.detalleHerramientaUsada}" rowKey="#{row.id}"
+						title="Herramientas usadas" 
+						auditable="false">
+
+						<p:column headerText="Código">
+							<h:outputText value="#{row.id}" />
+						</p:column>
+
+						<p:column headerText="Herramienta">
+							<p:cellEditor>
+				               <f:facet name="output"><h:outputText value="#{row.maToolsetId.value}" /></f:facet>
+				               <f:facet name="input">   
+				               <p:autoComplete 
+													value="#{row.maToolsetId}"
+													completeMethod="#{mProductionController.completeHerramientas}" 
+													var="match" itemLabel="#{match.value}" itemValue="#{match}"
+													converter="#{maToolsetConverter}" forceSelection="true" 
+													dropdown="true" />
+				               
+				               </f:facet>
+				           </p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Uso de herramienta"> 
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{row.used}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{row.used}">
+									<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+									</p:inputText> 
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+					</pr:dataList>
+
+					<pr:dataModal title="Herramientas usadas" for="dlHerramientasWorkEffort" 
+						dataList="#{bean.detalleHerramientaUsada}" width="450" height="300">
+						<ui:include
+							src="/pages/productionMgt/transactions/workEffort/editToolsetused.xhtml"></ui:include>  
+					</pr:dataModal>
+
+				</p:tab>
+				<p:tab title="Productos">
+
+					<pr:dataList id="dlProductoFasesWorkEffort"
+						dataList="#{bean.detalleProductoFase}" rowKey="#{row.id}"
+						title="Entrada/Salida Producto" 
+						auditable="false">
+
+						<p:column headerText="Producto">
+							<h:outputText value="#{row.MProductId.name}" />
+						</p:column>
+
+						<p:column headerText="Tipo de producción">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{row.productiontype.enumValue}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:selectOneMenu value="#{row.productiontype}">
+										<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+											itemValue="#{null}" />
+										<f:selectItems value="#{bean.listProductionType}" var="type"
+											itemLabel="#{type.enumValue}" itemValue="#{type}" />
+									</p:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Cantidad">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{row.movementqty}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{row.movementqty}">
+									<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+									</p:inputText>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Cantidad rechazada"> 
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{row.rejectedquantity}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{row.rejectedquantity}">
+									<f:validateLongRange minimum="0" maximum="99999"></f:validateLongRange>
+									</p:inputText>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+					</pr:dataList>
+
+					<pr:dataModal title="Producto" for="dlProductoFasesWorkEffort" 
+						dataList="#{bean.detalleProductoFase}" width="450" height="350">
+						<ui:include
+							src="/pages/productionMgt/transactions/workEffort/editIOProduct.xhtml"></ui:include>  
+					</pr:dataModal>
+
+				</p:tab>
+				<p:tab title="Categoría Salarial/Empleado">
+				
+				<pr:dataList id="dlCategoriaSalarialWorkEffort"
+						dataList="#{bean.detalleCategoriaEmpleado}" rowKey="#{row.id}"
+						title="Categoría Salarial/Empleado usadas" 
+						auditable="false">
+
+
+						<p:column headerText="Categoria Salarial">
+							<p:cellEditor>
+				               <f:facet name="output"><h:outputText value="#{row.CSalaryCategoryId.name}" /></f:facet>
+				               <f:facet name="input">   
+				               <p:autoComplete 
+													value="#{row.CSalaryCategoryId}"
+													completeMethod="#{mProductionController.completeCategoriasSalariales}"  
+													var="match" itemLabel="#{match.name}" itemValue="#{match}" 
+													converter="#{cSalaryCategoryConverter}" forceSelection="true"  
+													required="true" requiredMessage="El campo Categoría Salarial es requerido"
+													dropdown="true" />
+				               
+				               </f:facet>
+				           </p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Cantidad empleados">  
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{row.quantity}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{row.quantity}">
+									<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+									</p:inputText>  
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+					</pr:dataList>
+
+					<pr:dataModal title="Categoría Salarial/Empleado" for="dlCategoriaSalarialWorkEffort" 
+						dataList="#{bean.detalleCategoriaEmpleado}" width="450" height="300"> 
+						<ui:include
+							src="/pages/productionMgt/transactions/workEffort/editSalaryCategory.xhtml"></ui:include>   
+					</pr:dataModal>
+				
+				</p:tab>
+				<p:tab title="Máquinas">
+				
+				<pr:dataList id="dlMaquinariaWorkEffort"
+						dataList="#{bean.detalleMaquina}" rowKey="#{row.id}" 
+						title="Máquinas usadas" 
+						auditable="false">
+
+	
+
+						<p:column headerText="Máquina">
+							<p:cellEditor>
+				               <f:facet name="output"><h:outputText value="#{row.maMachineId.name}" /></f:facet>
+				               <f:facet name="input">   
+				               <p:autoComplete 
+													value="#{row.maMachineId}" 
+													completeMethod="#{mProductionController.completeMaquinas}"  
+													var="match" itemLabel="#{match.name}" itemValue="#{match}" 
+													converter="#{maMachineConverter}" forceSelection="true"   
+													required="true" requiredMessage="El campo Máquina es requerido" 
+													dropdown="true" />
+				               
+				               </f:facet>
+				           </p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Uso">  
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{row.use}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{row.use}">
+									<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+									</p:inputText>  
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+					</pr:dataList>
+
+					<pr:dataModal title="Máquina" for="dlMaquinariaWorkEffort" 
+						dataList="#{bean.detalleMaquina}" width="450" height="300">  
+						<ui:include
+							src="/pages/productionMgt/transactions/workEffort/editMachine.xhtml"></ui:include>    
+					</pr:dataModal>
+				
+				</p:tab>
+			</p:tabView>
+
+		</p:tab>
+	</p:accordionPanel>
+
+
+
+
+</ui:composition>

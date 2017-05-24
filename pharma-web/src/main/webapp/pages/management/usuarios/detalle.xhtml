@@ -1,0 +1,122 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+
+	<h:panelGrid columns="4">
+
+		<h:outputText value="Nombres:" />
+		<p:inputText id="nombre" value="#{bean.currentEntity.nombre}"
+			required="true" requiredMessage="El campo Nombres es requerido"
+			label="nombre" size="35">
+
+			<p:ajax event="change"
+				listener="#{bean.onChangeCrearNombreUsuario()}" update="usernameNew"></p:ajax>
+
+		</p:inputText>
+
+
+
+		<h:outputText value="Apellidos:" />
+		<p:inputText id="apellido" value="#{bean.currentEntity.apellido}"
+			required="true" requiredMessage="El campo Apellidos es requerido"
+			label="apellido" size="35">
+			<p:ajax event="change"
+				listener="#{bean.onChangeCrearNombreUsuario()}" update="usernameNew"></p:ajax>
+		</p:inputText>
+
+
+
+		<h:outputText value="Correo:" />
+		<p:inputText id="correo" value="#{bean.currentEntity.correo}"
+			required="true" requiredMessage="El campo Correo es requerido"
+			label="correo" size="35"
+			validatorMessage="El correo no coincide con el formato">
+
+			<f:validateRegex
+				pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"
+				for="correo" />
+
+		</p:inputText>
+
+
+
+
+		<h:outputText value="Teléfono fijo:" style="white-space: nowrap" />
+		<p:inputMask id="telFijo" value="#{bean.currentEntity.telefonoFijo}"
+			mask="99 9999999" />
+
+
+		<h:outputText value="Teléfono móvil:" style="white-space: nowrap" />
+		<p:inputMask id="telMovil" value="#{bean.currentEntity.telefonoMovil}"
+			mask="99 99999999" />
+
+
+		<h:outputText value="Usuario:" />
+		<p:inputText id="usernameNew" value="#{bean.currentEntity.usuario}"
+			required="true" requiredMessage="El campo Usuario es requerido"
+			label="Username" readonly="true" />
+
+
+
+
+		<h:outputText value="Contraseña:" />
+
+		<p:inputText id="pass1" value="#{bean.pass1}" required="true"
+			requiredMessage="El campo Contraseña es requerido" type="password" />
+
+
+
+		<h:outputText value="Confirmación Contraseña:" />
+
+		<p:inputText id="pass2" value="#{bean.pass2}" required="true"
+			requiredMessage="El campo Confirmación Contraseña es requerido"
+			type="password" />
+
+
+	</h:panelGrid>
+	<br clear="all" />
+
+	<pr:dataList id="dlRoles" dataList="#{bean.detalleUsuariosRoles}"
+		rowKey="#{row.id}" title="Lista de roles" rendered="#{bean.currentEntity.id ne null}">
+		
+		
+
+		<p:column headerText="Código">
+			<h:outputText value="#{row.id}" />
+		</p:column>
+
+		<p:column headerText="roles">
+			<p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{row.rol.descripcion}" /></f:facet>
+               <f:facet name="input">   
+               <p:autoComplete id="acRol"
+									value="#{row.rol}"
+									completeMethod="#{bean.completeRol}"
+									var="rol" itemLabel="#{rol.nombre}" itemValue="#{rol}"
+									converter="#{rolConverter}" forceSelection="true"
+									dropdown="true" />
+               
+               </f:facet>
+           </p:cellEditor>
+		</p:column>
+
+	</pr:dataList>
+	
+	
+	
+	
+	<pr:dataModal title="Roles" for="dlRoles" dataList="#{bean.detalleUsuariosRoles}"  width="350" height="100">
+		<ui:include src="/pages/management/usuarios/edit.xhtml"></ui:include>
+	</pr:dataModal>
+	
+	
+
+
+</ui:composition>

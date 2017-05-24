@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<h:panelGrid columns="2">
+
+
+		<p:outputLabel value="Máquina:" for="ocMachineUse" /> 
+		<p:autoComplete id="ocMachineUse"
+													value="#{activeItem.maMachineId}"  
+													completeMethod="#{mProductionController.completeMaquinas}"  
+													var="match" itemLabel="#{match.name}" itemValue="#{match}" 
+													converter="#{maMachineConverter}" forceSelection="true"   
+													required="true" requiredMessage="El campo Máquina es requerido" 
+													dropdown="true" >
+			<p:ajax event="itemSelect" process="@this"></p:ajax>
+		</p:autoComplete>
+
+		<p:outputLabel value="Uso de máquina:" for="itUsoMaquina" /> 
+		<p:inputText id="itUsoMaquina" value="#{activeItem.use}"> 
+			<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+		</p:inputText>
+
+
+
+	</h:panelGrid>
+
+
+</ui:composition>

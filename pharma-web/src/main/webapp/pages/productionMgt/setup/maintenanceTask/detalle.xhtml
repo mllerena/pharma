@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+
+	<h:panelGrid columns="4">
+
+		<p:outputLabel value="Nombre:" for="itNombreEdit" />
+		<p:inputText id="itNombreEdit" value="#{bean.currentEntity.name}"
+			required="true"
+			requiredMessage="El campo Nombre es requerido" size="50" maxlength="60">
+		</p:inputText>
+
+
+
+		<p:outputLabel value="Descripción:" for="itDescripcionEdit" />
+		<p:inputTextarea id="itDescripcionEdit"
+			value="#{bean.currentEntity.description}" label="descripcion"
+			cols="50" rows="3" maxlength="255">
+		</p:inputTextarea>
+
+
+	</h:panelGrid>
+
+</ui:composition>

@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/resources/templates/bodyTabTemplate.xhtml">
+
+
+	<ui:param name="bean" value="#{maWorkrequirementController}" />
+
+	<ui:define name="headerDetailRight">
+
+		<h:panelGrid columns="10"
+			rendered="#{maWorkrequirementController.taskActive != null}">
+			<p:outputLabel value="Código:" for="ottaskid" />
+			<h:outputText id="ottaskid"
+				value="#{maWorkrequirementController.taskActive.taskId}"
+				style="font-weight: normal !important;" />
+
+			<p:outputLabel value="Tarea:" for="ottaskname" />
+			<h:outputText id="ottaskname"
+				value="#{maWorkrequirementController.taskActive.name}"
+				style="font-weight: normal !important;" />
+
+			<p:outputLabel value="Creada:" for="otCreatedOn" />
+			<h:outputText id="otCreatedOn"
+				value="#{maWorkrequirementController.taskActive.createdOn}"
+				style="font-weight: normal !important;" />
+
+			<p:outputLabel value="Instancia:" for="otInstance" />
+			<h:outputText id="otInstance"
+				value="#{maWorkrequirementController.processTaskActive.id}"
+				style="font-weight: normal !important;" />
+
+			<p:outputLabel value="Proceso:" for="otProcess" />
+			<h:outputText id="otProcess"
+				value="#{maWorkrequirementController.processTaskActive.processName}"
+				style="font-weight: normal !important;" />
+
+		</h:panelGrid>
+
+	</ui:define>
+
+
+	<ui:define name="filtro">
+		<ui:include
+			src="/pages/productionMgt/transactions/workRequirement/filtro.xhtml"></ui:include>
+	</ui:define>
+
+	<ui:define name="resultado">
+		<ui:include
+			src="/pages/productionMgt/transactions/workRequirement/resultado.xhtml"></ui:include>
+	</ui:define>
+
+	<ui:define name="detalle">
+		<ui:include
+			src="/pages/productionMgt/transactions/workRequirement/detalle.xhtml"></ui:include>
+	</ui:define>
+
+
+	<ui:define name="extraButtonsDetail">
+
+		<p:commandButton icon="ui-icon-transferthick-e-w"
+			process="@this lpDetail" update="lcontent pg_detalle"
+			actionListener="#{maWorkrequirementController.actionWorkRequirementProcess()}"
+			id="cbProcessWorkRequirement" value="Procesar OF"
+			rendered="#{bean.currentEntity.id ne null}" />
+
+
+		<p:commandButton icon="ui-icon-transferthick-e-w"
+			process="@this lpDetail" update="lcontent pg_detalle"
+			actionListener="#{maWorkrequirementController.actionWorkRequirementClose()}"
+			id="cbWorkRequirementClose" value="Cerrar OF"
+			rendered="#{bean.currentEntity.id ne null}" />
+
+
+		<p:commandButton icon="ui-icon-transferthick-e-w"
+			process="@this lpDetail" update="lcontent pg_detalle"
+			actionListener="#{maWorkrequirementController.actionWorkReqPhaseClose()}"
+			id="cbWorkReqPhaseClose" value="Cerrar fase OF"
+			rendered="#{maWorkrequirementController.detalleFases ne null and maWorkrequirementController.detalleFases.activeItem ne null}" />
+
+		<p:commandButton icon="ui-icon-transferthick-e-w"
+			process="@this lpDetail" update="pg_detalle cbCompleteTask"
+			actionListener="#{maWorkrequirementController.completeTask()}"
+			id="cbCompleteTask" value="Siguiente actividad"
+			rendered="#{maWorkrequirementController.taskActive != null ? maWorkrequirementController.taskActive.status eq 'InProgress' : false}" />
+	</ui:define>
+
+
+
+</ui:composition>

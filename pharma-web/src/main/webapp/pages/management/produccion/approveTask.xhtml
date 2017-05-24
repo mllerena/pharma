@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+	<h:form>
+      <h:panelGrid columns="2">
+        <h:outputLabel value="Seleccione destinatario" for="recipient" />
+        <p:selectOneMenu id="recipient" value="#{processBean.recipient}">
+          <f:selectItem itemValue="Juan Villavicencio"/>
+          <f:selectItem itemValue="Lorena Flores"/>
+        </p:selectOneMenu>
+        <h:outputLabel value="Cantidad evaluación" for="reward" />
+        <h:inputText id="reward" value="#{processBean.reward}" />
+        <h:outputLabel />
+        <p:commandButton action="#{processBean.startProcess}" value="Iniciar" />
+      </h:panelGrid>
+    </h:form>
+
+</ui:composition>

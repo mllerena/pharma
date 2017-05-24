@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui" 
+	xmlns:of="http://omnifaces.org/functions">
+
+
+
+
+	<h:panelGrid columns="4">
+
+		<p:outputLabel value="Nombre:" for="itNombreEdit" />
+		<p:inputText id="itNombreEdit" value="#{bean.currentEntity.name}"
+			required="true"
+			requiredMessage="El campo Nombre es requerido" size="50" maxlength="60">
+		</p:inputText>
+		
+		<p:outputLabel value="Descripción:" for="itDescripcionEdit" />
+		<p:inputTextarea id="itDescripcionEdit"
+			value="#{bean.currentEntity.description}" label="descripcion"
+			cols="50" rows="3" maxlength="255">
+		</p:inputTextarea>
+		
+		
+
+	</h:panelGrid>
+	<br clear="all"></br>
+	
+	<p:tabView id="tvDetalles" rendered="#{bean.currentEntity.id ne null}">
+	
+		<p:tab id="tTest" title="Prueba (Punto de control)">  
+
+			<pr:dataList id="dlTest" dataList="#{bean.detallePrueba}" 
+				rowKey="#{row.id}" title="Pruebas asociadas" 
+				rendered="#{bean.currentEntity.id ne null}">
+
+				<p:column headerText="Código"> 
+					<h:outputText value="#{row.id}" />
+				</p:column>
+				
+				<p:column headerText="Nombre" > 
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.name}" ></h:outputText> 
+						</f:facet>
+						<f:facet name="input"> 
+							<p:inputText value="#{row.name}" ></p:inputText>          
+						</f:facet> 
+					</p:cellEditor>
+				</p:column> 
+
+				<p:column headerText="Días" > 
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.days}" ></h:outputText>
+						</f:facet>
+						<f:facet name="input"> 
+							<p:inputText value="#{row.days}" title="Tiempo necesario para que se lleve a cabo el control y pueda continuar la producción"></p:inputText>          
+						</f:facet> 
+					</p:cellEditor>
+				</p:column> 
+				
+
+			</pr:dataList> 
+
+			<pr:dataModal title="Prueba" for="dlTest" 
+				dataList="#{bean.detallePrueba}" width="430" height="250">    
+				<ui:include src="/pages/productionMgt/setup/periodicControl/edit.xhtml"></ui:include>   
+			</pr:dataModal>
+
+		</p:tab>
+	</p:tabView>
+
+</ui:composition>

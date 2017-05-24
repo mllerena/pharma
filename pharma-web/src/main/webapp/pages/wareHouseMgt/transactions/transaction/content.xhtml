@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/resources/templates/bodyTabTemplate.xhtml" >
+
+
+	<ui:param name="bean" value="#{mTransactionController}" />
+	
+	<ui:param name="renderedNew" value="false" />
+	<ui:param name="renderedSave" value="false" />
+	<ui:param name="labelEdit" value="Ver" /> 
+	
+
+
+	<ui:define name="filtro">
+			<ui:include src="/pages/wareHouseMgt/transactions/transaction/filtro.xhtml"></ui:include>
+	</ui:define>
+	
+	<ui:define name="resultado">
+			<ui:include src="/pages/wareHouseMgt/transactions/transaction/resultado.xhtml"></ui:include>
+	</ui:define>
+	
+	<ui:define name="detalle">
+			<ui:include src="/pages/wareHouseMgt/transactions/transaction/detalle.xhtml"></ui:include>  
+	</ui:define>
+
+
+
+</ui:composition>

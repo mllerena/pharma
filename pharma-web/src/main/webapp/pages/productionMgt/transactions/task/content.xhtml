@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/resources/templates/bodyTabTemplate.xhtml" >
+
+
+	<ui:param name="bean" value="#{taskSummaryController}" />
+	
+	<ui:param name="renderedNew" value="false" />
+	<ui:param name="labelEdit" value="Procesar" />
+	
+	<ui:param name="renderedSave" value="false" />
+	<ui:param name="renderedDelete" value="false" />
+	   
+
+
+	<ui:define name="filtro">
+			<ui:include src="/pages/productionMgt/transactions/task/filtro.xhtml"></ui:include>
+	</ui:define>
+	
+	<ui:define name="resultado">
+			<ui:include src="/pages/productionMgt/transactions/task/resultado.xhtml"></ui:include>
+	</ui:define> 
+	
+	<ui:define name="detalle">
+			<ui:include src="/pages/productionMgt/transactions/task/detalle.xhtml"></ui:include> 
+	</ui:define>
+	
+	
+	<ui:define name="extraButtonsDetail">
+	
+				<p:commandButton icon="ui-icon-transferthick-e-w"
+						process="@this lpDetail" update="lcontent pg_detalle"
+							actionListener="#{taskSummaryController.claimTask()}"  
+						id="cbClaimTask" value="Tomar tarea" rendered="#{taskSummaryController.taskSelected.status eq 'Ready'}"/>  
+				
+				<p:commandButton icon="ui-icon-transferthick-e-w"
+						process="@this lpDetail" update="lcontent pg_detalle"
+							actionListener="#{taskSummaryController.startTaskOpenTab()}"  
+						id="cbStartTaskOpenTab" value="Ejecutar tarea" rendered="#{taskSummaryController.taskSelected.status eq 'Reserved' or taskSummaryController.taskSelected.status eq 'InProgress'}"/>		
+				
+				<p:commandButton icon="ui-icon-transferthick-e-w"
+						process="@this lpDetail" update="lcontent pg_detalle"
+							actionListener="#{taskSummaryController.releaseTask()}"  
+						id="cbReleaseTask" value="Liberar tarea" rendered="#{taskSummaryController.taskSelected.status eq 'Reserved'}"/>
+				
+				 			
+						
+	</ui:define>
+
+
+</ui:composition>

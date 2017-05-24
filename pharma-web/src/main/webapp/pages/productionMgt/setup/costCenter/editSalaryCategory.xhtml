@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<h:panelGrid columns="2">
+
+		<p:outputLabel value="Unidad de medida de costo:" for="somUOM" />
+		<p:selectOneMenu id="somUOM" value="#{activeItem.costuom}" style="width:100%;" converter="#{costUOMConverter}">  
+			<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+				itemValue="#{null}" />
+			<f:selectItems value="#{bean.listCostUOM}" var="uom"
+				itemLabel="#{uom.enumValue}" itemValue="#{uom}" />
+		</p:selectOneMenu>
+
+
+		<p:outputLabel value="Categoria Salarial:" for="ocSalCategory" />
+		<p:autoComplete id="ocSalCategory"
+			value="#{activeItem.CSalaryCategoryId}"
+			completeMethod="#{maCostcenterController.completeCategoriasSalariales}"
+			var="match" itemLabel="#{match.name}" itemValue="#{match}"
+			converter="#{cSalaryCategoryConverter}" forceSelection="true"
+			required="true"
+			requiredMessage="El campo Categoría Salarial es requerido"
+			dropdown="true">
+		</p:autoComplete>
+
+		<p:outputLabel value="Cantidad:" for="itCantEmpleado" />
+		<p:inputText id="itCantEmpleado" value="#{activeItem.quantity}">
+		</p:inputText>
+
+
+
+	</h:panelGrid>
+
+
+</ui:composition>

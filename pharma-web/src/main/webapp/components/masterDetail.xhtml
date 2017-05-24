@@ -1,0 +1,199 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:o="http://omnifaces.org/ui">
+
+	<!-- ui:param name="bean" value="#{masterDetailController}" /-->
+	
+	<pr:default var="id" value="#{null}" />
+	
+	<pr:default var="bean" value="#{null}" />
+
+	<pr:default var="textInfo" value="Default message informative" />
+	<pr:default var="rendererInfo" value="false" />
+	
+	<pr:default var="selectionMode" value="#{null}" />
+	<pr:default var="selection" value="#{selectionMode != null ? bean.selectedEntityLink : null}" />
+	<pr:default var="updateSelection" value="" />
+	
+	
+	
+	<pr:default var="textCreateButton" value="Crear" />
+	<pr:default var="textDeleteButton" value="Eliminar" />
+	<pr:default var="textSaveButton" value="Grabar" />
+	<pr:default var="textCancelButton" value="Cancelar" />
+	
+	
+		
+
+
+	<h:panelGrid columns="1" style="width: 100%;" id="#{id}">
+	
+		<div class="ui-widget" style="#{rendererInfo ? 'display: block;' : 'display: none;'}">
+			<div class="ui-state-highlight ui-corner-all"
+				style="padding: 0 .7em;">
+				<p>
+					<span class="ui-icon ui-icon-info"
+						style="float: left; margin-right: .3em;"></span>
+					#{!textInfo.equals('') ? textInfo : 'Atributo textInfo, No debe estar vacío'}
+				</p>
+			</div>
+		</div>
+		
+		<p:toolbar id="tbOptions_#{id}">
+			<f:facet name="left">
+			
+				<p:commandButton icon="ui-icon-refresh" id="cbRefrescar_#{id}"
+					actionListener="#{bean.cancel()}"  disabled="#{!bean.enabledRefresh}"
+							process="@this" 
+							update="tvMasterDetail_#{id} tbOptions_#{id}"
+							oncomplete="PF('wvMasterDetail_#{id}').select(0);"/>
+				<p:tooltip for="cbRefrescar_#{id}" value="Refrescar" />
+			
+				<p:commandButton value="#{textCreateButton}" icon="ui-icon-plus" id="cbCrear_#{id}" 
+					actionListener="#{bean.create()}" disabled="#{!bean.enabledCreate}"
+							process="@this" 
+							update="tvMasterDetail_#{id} tbOptions_#{id}" 
+							oncomplete="PF('wvMasterDetail_#{id}').select(1);"/>
+							
+				<p:commandButton value="#{textDeleteButton}" icon="ui-icon-close"
+					actionListener="#{bean.delete()}" 
+					disabled="#{!bean.enabledDelete}"
+					process="@this tvMasterDetail_#{id}" update="tvMasterDetail_#{id} tbOptions_#{id}"
+					oncomplete="PF('wvMasterDetail_#{id}').select(0);">
+
+					<p:confirm header="Confirmación" message="#{confirmDeleteMessage}"
+						icon="ui-icon-alert"  />
+
+				</p:commandButton>			
+
+				<p:commandButton value="#{textSaveButton}" icon="ui-icon-disk"
+					actionListener="#{bean.save()}" disabled="#{!bean.enabledSave}" 
+					process="@this tvMasterDetail_#{id}" update="tvMasterDetail_#{id} tbOptions_#{id}"/>
+
+				
+				
+				<p:commandButton value="#{textCancelButton}" icon="ui-icon-cancel"
+							process="@this"  update="tvMasterDetail_#{id} tbOptions_#{id}" 
+							actionListener="#{bean.cancel()}" disabled="#{!bean.enabledCancel}"
+							oncomplete="PF('wvMasterDetail_#{id}').select(0);">
+				</p:commandButton>
+						
+			</f:facet>
+			
+			<f:facet name="right">
+				<pr:context header="">
+						<ui:insert name="actions" />
+				</pr:context>
+			</f:facet>
+		</p:toolbar>
+		
+		
+		 
+		<p:tabView id="tvMasterDetail_#{id}" widgetVar="wvMasterDetail_#{id}">
+			<p:tab title="#{principalTitle}" id="tPrincipal" disabled="#{bean.enabledCancel}">
+
+				<p:dataTable id="dtMaster_#{id}" var="row" value="#{bean.list}"
+					rowKey="#{row.id}" paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="bottom" rows="10"
+					rowsPerPageTemplate="20,50,100" emptyMessage="#{emptyMessage}"
+					selectionMode = "#{selectionMode}"
+					selection="#{selection}">
+					
+					
+					<p:ajax event="rowSelect" listener="#{bean.selectedLinked}" update="#{bean.updateSelection(id,updateSelection)}"/>
+
+
+					<pr:context header="">
+						<ui:insert name="datatable" />
+					</pr:context>
+
+					<p:column style="width:96px;text-align: center" >
+					
+					
+							<p:commandButton id="cbEditar_#{id}" icon="ui-icon-pencil" 
+							actionListener="#{bean.selected(row)}"
+							process="@parent:@parent:@parent:tvMasterDetail_#{id}:dtMaster_#{id}"
+							update="@parent:@parent:@parent:tvMasterDetail_#{id} @parent:@parent:@parent:tvMasterDetail_#{id}:@parent:tbOptions_#{id}" 
+							oncomplete="PF('wvMasterDetail_#{id}').select(1);">
+							</p:commandButton>
+							<p:tooltip for="cbEditar_#{id}" value="Editar" />		
+									
+									<p:spacer width="2"></p:spacer>
+							
+							<p:commandButton id="cbEliminar_#{id}" icon="ui-icon-close"
+							actionListener="#{bean.delete(row)}" 
+							process="@parent:@parent:@parent:tvMasterDetail_#{id}:dtMaster_#{id}" 
+							update="@parent:@parent:@parent:tvMasterDetail_#{id}:dtMaster_#{id}">
+		
+								<p:confirm header="Confirmación" message="#{confirmDeleteMessage}"
+								icon="ui-icon-alert"  />
+		
+							</p:commandButton>
+											
+							<p:tooltip for="cbEliminar_#{id}" value="Eliminar" />
+							
+							
+
+					</p:column>
+
+
+
+				</p:dataTable>
+
+			</p:tab>
+
+			<p:tab title="#{detailTitle}" id="tDetail" disabled="#{!bean.enabledCancel}" >
+
+
+				<h:panelGroup id="pgDetailTab">
+
+					<pr:context header="">
+
+						<ui:insert name="detailDataTable" />
+
+						
+
+					</pr:context>
+				</h:panelGroup>
+
+
+
+			</p:tab>
+			
+			
+
+		</p:tabView>
+		
+		
+		
+		
+		
+		
+		
+		
+
+	</h:panelGrid>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ui:composition>

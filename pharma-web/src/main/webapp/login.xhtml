@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- 	<link href="#{request.contextPath}/css/style.css" rel="stylesheet"
+		type="text/css" /> -->
+	
+	<h:outputStylesheet name="css/style.css" />
+		
+	<link rel="shortcut icon" href="#{request.contextPath}/img/favicon.ico" />
+	<title>Industria farmaceútica</title>
+	<meta name="viewport" content="width=device-width" />
+</h:head>
+<h:body>
+
+	<p:focus for="j_username" context="j_username"></p:focus>
+
+	<p:growl autoUpdate="true" globalOnly="true" />
+
+	<img class="login-background" src="#{request.contextPath}/resources/images/login-crystal-bg.jpeg"></img>
+
+	<!-- <img class="login-logo" src="#{request.contextPath}/resources/images/iPharma317x93.png"></img> --> 
+	
+	<img class="login-logo" src="#{request.contextPath}/resources/images/oie_SeCdgZWqFgQE.png"></img> 
+	
+	
+
+
+	<form method="post" action="j_security_check" id="loginForm">
+		<c:if test="#{param['error']=='true'}">
+			<h:panelGroup>
+				<center>
+					<f:event type="preRenderView"
+						listener="#{loginController.errorInicioSesion()}" />
+				</center>
+			</h:panelGroup>
+		</c:if>
+
+
+		<div class="ui-grid ui-grid-responsive login-panel">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-1">
+
+					<h:panelGrid columns="1">
+
+						<h:outputText value="Iniciar sesión" 
+						style="margin: 0px 0px 20px;font-family: OpenSansLight,Helvetica,Arial,Sans serif;color: #1973BC;text-rendering: optimizelegibility;font-weight: normal;font-size: 30px;margin-bottom: 25px;"/>
+
+
+						<h:panelGrid columns="3" cellspacing="5">
+
+							
+
+							<h:outputText value="Usuario:" style="font-size: 13px;color: #777;" />
+							<h:outputText value="Contraseña:" style="font-size: 13px;color: #777;"/>
+							<h:outputText value="" />
+
+							<p:inputText id="j_username" autocomplete="off" />
+
+
+							<p:password id="j_password" promptLabel="Ingrese su clave" />
+
+
+							<input type="submit" name="login" value="Ingresar"
+								class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only botonLogin"
+								style="padding: 5px 10px;" />
+
+						</h:panelGrid>
+
+					</h:panelGrid>
+
+
+
+
+				</div>
+
+			</div>
+		</div>
+
+
+
+
+
+
+
+
+
+	</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</h:body>
+</html>

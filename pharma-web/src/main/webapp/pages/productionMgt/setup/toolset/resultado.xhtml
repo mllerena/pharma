@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<pr:dataTable id="dtResult" dataTable="#{bean.dataTable}" selection="#{bean.currentEntity}" rowKey="#{row.id}">
+       
+		<p:column sortBy="#{row.id}" headerText="Código">
+			<h:outputText value="#{row.id}" />
+		</p:column>
+		
+		<p:column sortBy="#{row.name}" headerText="Nombre">
+			<h:outputText value="#{row.name}" />
+		</p:column>
+		
+		<p:column sortBy="#{row.usecycle}" headerText="Ciclo de uso">
+			<h:outputText value="#{row.usecycle}" />
+		</p:column>
+	
+	
+	</pr:dataTable>
+
+</ui:composition>

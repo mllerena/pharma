@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+	<h:panelGrid columns="2">
+
+		<p:outputLabel value="Coef. Uso:" for="itCof" />
+		<p:inputText id="itCof" value="#{activeItem.usecoef}" required="true"
+			requiredMessage="El campo Identificador es requerido">
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:inputText>
+
+		<p:outputLabel value="Tipo de herramienta:" for="itTipoHerr" />
+		<p:autoComplete value="#{activeItem.maToolsetTypeId}" id="itTipoHerr" 
+			completeMethod="#{bean.completeToolsetType}" var="comp"
+			itemLabel="#{comp.name}" itemValue="#{comp}"
+			converter="#{maToolsetTypeConverter}" forceSelection="true"
+			dropdown="true" emptyMessage="No hay datos para mostrar"> 
+			<p:ajax event="itemSelect" process="@this"></p:ajax>
+		</p:autoComplete>
+
+
+	</h:panelGrid>
+
+
+</ui:composition>

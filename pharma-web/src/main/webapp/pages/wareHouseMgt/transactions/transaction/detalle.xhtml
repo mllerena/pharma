@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+	<h:panelGrid columns="2">
+	
+		<p:outputLabel value="Fecha de movimiento:" for="otFecMovimiento" />
+		<h:outputText id="otFecMovimiento" value="#{mTransactionController.currentEntity.movementdate}" >
+				<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" type="both" />
+		</h:outputText> 
+
+		<p:outputLabel value="Tipo de movimiento:" for="itTipoMov" />
+		<p:inputText id="itTipoMov" value="#{mTransactionController.currentEntity.movementtype.enumValue}" readonly="true"/>
+		
+		<p:outputLabel value="Cantidades movidas:" for="itMovQty" />
+		<p:inputText id="itMovQty" value="#{mTransactionController.currentEntity.movementqty}" readonly="true"/>
+		
+		<p:outputLabel value="Línea de producción:" for="itProLine" />
+		<p:inputText id="itProLine" value="#{mTransactionController.currentEntity.MProductionlineId.MProductId.name}" readonly="true"/>
+		
+		
+		<p:outputLabel value="Almacén:" for="itAlmacen" />
+		<p:inputText id="itAlmacen" value="#{mTransactionController.currentEntity.MLocatorId.MWarehouseId.name}" readonly="true"/>
+		
+		
+		
+		
+
+	</h:panelGrid>
+
+</ui:composition>

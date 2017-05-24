@@ -1,0 +1,293 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+
+
+
+	<h:panelGrid columns="4">
+
+		<p:outputLabel value="Nombre:" for="itNombreEdit" />
+		<p:inputText id="itNombreEdit" value="#{bean.currentEntity.name}"
+			required="true" requiredMessage="El campo Nombre es requerido"
+			size="50" maxlength="60">
+		</p:inputText>
+
+		<p:outputLabel value="Tipo de máquina:" for="itTipoMaquinaEdit" />
+		<p:autoComplete id="itTipoMaquinaEdit"
+			value="#{bean.currentEntity.maMachineTypeId}"
+			completeMethod="#{bean.completeMachineType}" var="typMach"
+			itemLabel="#{typMach.name}" itemValue="#{typMach}"
+			converter="#{maMachineTypeConverter}" forceSelection="true"
+			dropdown="true" emptyMessage="No hay datos para mostrar" />
+
+
+		<p:outputLabel value="Año de compra:" for="cAnioCompra" />
+		<p:calendar id="cAnioCompra"
+			value="#{bean.currentEntity.purchaseyear}" pattern="dd-MM-yyyy"
+			placeholder="dd-MM-yyyy" />
+
+		<p:outputLabel value="Ciclo de uso:" for="itCicloUsoEdit" />
+		<p:inputText id="itCicloUsoEdit"
+			value="#{bean.currentEntity.usecycle}" required="true"
+			requiredMessage="El campo Ciclo de uso es requerido">
+		</p:inputText>
+
+
+
+	</h:panelGrid>
+	<br clear="all"></br>
+
+	<p:tabView id="tvDetalles" rendered="#{bean.currentEntity.id ne null}">
+
+		<p:tab id="tMachineCost" title="Costo">
+
+			<pr:dataList id="dlMachineCost"
+				dataList="#{bean.detalleCostoMaquina}" rowKey="#{row.id}"
+				title="Costos asociados" rendered="#{bean.currentEntity.id ne null}">
+
+				<p:column headerText="Código">
+					<h:outputText value="#{row.id}" />
+				</p:column>
+
+				<p:column headerText="Válido desde">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.validfrom}">
+								<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" type="both" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:calendar value="#{row.validfrom}" pattern="dd-MM-yyyy"
+								placeholder="dd-MM-yyyy" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Valor compra" style="text-align: right;">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.purchaseamt}"
+								style="text-align: right;">
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="itPurchaseamt" value="#{row.purchaseamt}"></p:inputText>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Costo" style="text-align: right;">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.cost}" style="text-align: right;">
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="itCostE" value="#{row.cost}"></p:inputText>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Unidad de medida de costo">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.costuom.enumValue}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{row.costuom}" style="width:100%;">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listCostUOM}" var="uom"
+									itemLabel="#{uom.enumValue}" itemValue="#{uom}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+			</pr:dataList>
+
+			<pr:dataModal title="Costo Máquina" for="dlMachineCost"
+				dataList="#{bean.detalleCostoMaquina}" width="430" height="250">
+				<ui:include src="/pages/productionMgt/setup/machine/edit.xhtml"></ui:include>
+			</pr:dataModal>
+
+		</p:tab>
+
+		<p:tab id="tMaintenance" title="Mantenimiento">
+
+			<pr:dataList id="dlMaintenance"
+				dataList="#{bean.detalleMantenimiento}" rowKey="#{row.id}"
+				title="Mantenimientos asociados"
+				rendered="#{bean.currentEntity.id ne null}" >   
+
+				<p:column headerText="Código">
+					<h:outputText value="#{row.id}" />
+				</p:column>
+
+				<p:column headerText="Nombre">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.name}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{row.name}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+
+				<p:column headerText="Tipo de mantenimiento">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.maintenanceType.enumValue}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{row.maintenanceType}"
+								style="width:100%;">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listMaintType}" var="type"
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+
+				<p:column headerText="Operación de Mantenimiento">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.maMaintOperationId.name}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:autoComplete value="#{row.maMaintOperationId}"
+								completeMethod="#{bean.completeMaintenanceOperation}" var="comp"
+								itemLabel="#{comp.name}" itemValue="#{comp}"
+								converter="#{maMaintOperationConverter}" forceSelection="true"
+								dropdown="true" emptyMessage="No hay datos para mostrar" />
+
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Tiempo esperado (Horas)">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.plannedtime}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:spinner value="#{row.plannedtime}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+			</pr:dataList>
+
+			<pr:dataModal title="Mantenimiento" for="dlMaintenance"
+				dataList="#{bean.detalleMantenimiento}" width="430" height="250">
+				<ui:include
+					src="/pages/productionMgt/setup/machine/editMaintenance.xhtml"></ui:include>
+			</pr:dataModal>
+			
+			<br clear="all"></br>
+			
+			<pr:dataList id="dlPeriodicidad"
+				dataList="#{bean.detallePeriodicidad}" rowKey="#{row.id}" 
+				title="Periodicidad de Mantenimiento: #{bean.detalleMantenimiento.activeItem.id}"  > 
+
+				<p:column headerText="Código">
+					<h:outputText value="#{row.id}" />
+				</p:column>
+
+				<p:column headerText="Tipo de periodicidad">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.periodicityType.enumValue}" /> 
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{row.periodicityType}" 
+								style="width:100%;">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listPeriodicityType}" var="type" 
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column headerText="Turno">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.shift.enumValue}" /> 
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{row.shift}" 
+								style="width:100%;">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listShiftType}" var="type" 
+									itemLabel="#{type.enumValue}" itemValue="#{type}" /> 
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+
+				<p:column headerText="Fecha inicio">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.initdate}">
+								<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" type="both" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:calendar value="#{row.initdate}" pattern="dd-MM-yyyy" 
+								placeholder="dd-MM-yyyy" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column headerText="Excluir fin de semana">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.excludeweekend.enumValue}" /> 
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{row.excludeweekend}"> 
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listYesNo}" var="type" 
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>			
+				
+			</pr:dataList>
+
+			<pr:dataModal title="Periodicidad" for="dlPeriodicidad"
+				dataList="#{bean.detallePeriodicidad}" width="430" height="250"> 
+				<ui:include
+					src="/pages/productionMgt/setup/machine/editPeriodicity.xhtml"></ui:include>
+			</pr:dataModal>
+			
+			
+			
+			
+
+		</p:tab>
+
+	</p:tabView>
+	
+	
+</ui:composition>

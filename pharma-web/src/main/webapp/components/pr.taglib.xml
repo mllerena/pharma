@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<facelet-taglib>
+
+    <namespace>http://primefacesreload.com/jsf/tags</namespace>
+    
+    
+    <tag>
+	  <tag-name>default</tag-name>
+	  <handler-class>org.pharmaceutical.view.facelets.components.tag.VarDefaultTagHandler</handler-class>
+	</tag>
+    
+    <tag>
+        <tag-name>masterDetail</tag-name>
+        <source>masterDetail.xhtml</source>
+    </tag>    
+    
+    <tag>
+        <tag-name>dataTable</tag-name>
+        <source>dataTable.xhtml</source>
+    </tag>  
+    
+    <tag>
+        <tag-name>dataList</tag-name>
+        <source>dataList.xhtml</source>
+    </tag>
+    
+    <tag>
+        <tag-name>dataModal</tag-name>
+        <source>dataModal.xhtml</source>
+    </tag>
+    
+    <tag>
+        <tag-name>context</tag-name>
+        <source>context.xhtml</source>
+    </tag> 
+        
+
+</facelet-taglib>

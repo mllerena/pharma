@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:o="http://omnifaces.org/ui">
+<f:view contentType="text/html" locale="es" />
+<ui:insert name="metadata"></ui:insert>
+<h:head>
+	<title><ui:insert name="page_title">Industria Farmacéutica</ui:insert></title>
+	<!-- <link href="#{request.contextPath}/css/style.css" rel="stylesheet"
+		type="text/css" /> -->
+
+	<h:outputStylesheet name="css/style.css" />
+
+</h:head>
+<h:body>
+
+	<h:form >
+	
+	
+		<h:panelGrid columns="2" id="pgLocationView">
+
+		<p:outputLabel value="Dirección 1:" for="itDir1" />
+		<p:inputText id="itDir1" value="#{cLocationView.cLocation.address1}" 
+			label="direccion1" size="35">
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:inputText>
+
+		<p:outputLabel value="Dirección 2:" for="itDir2" />
+		<p:inputText id="itDir2" value="#{cLocationView.cLocation.address2}"
+			label="direccion2" size="35">
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:inputText>
+
+		<p:outputLabel value="Código Postal:" for="itCodPostal" />
+		<p:inputText id="itCodPostal" value="#{cLocationView.cLocation.postal}"
+			label="postal" size="35">
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:inputText>
+
+		<p:outputLabel value="Ciudad:" for="itCiudad" />
+		<p:inputText id="itCiudad" value="#{cLocationView.cLocation.city}"
+			label="ciudad" size="35">
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:inputText>
+
+		<p:outputLabel value="País:" for="acCountry" />
+		<p:autoComplete id="acCountry"
+			value="#{cLocationView.cLocation.CCountryId}"
+			completeMethod="#{cLocationView.completeCountry}" var="country"
+			itemLabel="#{country.name}" itemValue="#{country}"
+			converter="#{cCountryConverter}" forceSelection="true"
+			dropdown="true" required="true"
+			requiredMessage="El campo país es obligatorio">
+			<p:ajax event="itemSelect" process="@this"></p:ajax>
+		</p:autoComplete>
+		
+		<p:commandButton icon="ui-icon-plus" value="Agregar" actionListener="#{cLocationView.add()}" process="pgLocationView"/>
+
+	</h:panelGrid>
+	</h:form>
+
+</h:body>
+</html>

@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"> 
+
+
+
+
+	<h:panelGrid columns="4">
+
+		<p:outputLabel value="Código:" for="itTaskId" />
+		<p:inputText id="itTaskId" value="#{taskSummaryController.taskSelected.taskId}"
+		  maxlength="60" readonly="true" >  
+		</p:inputText>
+		
+		<p:outputLabel value="Tarea:" for="itNameEdit" />
+		<p:inputText id="itNameEdit" value="#{taskSummaryController.taskSelected.name}" readonly="true" size="50">  
+		</p:inputText>
+		
+		<p:outputLabel value="Descripción:" for="itDescripcion" />
+		<p:inputTextarea id="itDescripcion"
+			value="#{taskSummaryController.taskSelected.description}" label="descripcion" readonly="true" cols="50" rows="3" maxlength="255"> 
+		</p:inputTextarea>
+		
+		<p:outputLabel value="Estado:" for="itStatus" />
+		<p:inputText id="itStatus" value="#{taskSummaryController.descripcionEstado(taskSummaryController.taskSelected.status)}" readonly="true" />
+		
+		
+		
+		<p:outputLabel value="Creado por:" for="itCreatedBy" />
+		<p:inputText id="itCreatedBy" value="#{taskSummaryController.taskSelected.createdBy}" readonly="true" />
+		
+		<p:outputLabel value="Fecha Creación:" for="itCreatedOn" />
+		<p:inputText id="itCreatedOn" value="#{taskSummaryController.taskSelected.createdOn}" readonly="true" >
+				<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" type="both" />
+		</p:inputText>
+		
+		<p:outputLabel value="Propietario actual:" for="itactualOwner" />
+		<p:inputText id="itactualOwner" value="#{taskSummaryController.taskSelected.actualOwner}" readonly="true" />
+		
+		
+		<p:outputLabel value="Proceso:" for="itProcessInstance" />
+		<p:inputText id="itProcessInstance" value="#{taskSummaryController.processTaskSelected.processName}" readonly="true" size="50"/> 
+		
+
+
+	</h:panelGrid>
+
+
+</ui:composition>

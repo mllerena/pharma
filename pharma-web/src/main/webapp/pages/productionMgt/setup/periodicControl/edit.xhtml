@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui" 
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<o:methodParam name="method" value="#{bean.returnLocation}" />
+
+
+	<h:panelGrid columns="2">
+	
+	
+		
+		<p:outputLabel value="Nombre:" for="itNameEdit" />
+		<p:inputText id="itNameEdit" value="#{activeItem.name}"
+			required="true"
+			requiredMessage="El campo Nombre es requerido" size="50" maxlength="60">
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:inputText>
+		
+		<p:outputLabel value="Descripción:" for="itDescEdit" />
+		<p:inputTextarea id="itDescEdit"
+			value="#{activeItem.description}" label="descripcion"
+			cols="50" rows="3" maxlength="255">
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:inputTextarea>
+		
+		<p:outputLabel value="Días:" for="itDias" />
+		<p:inputText id="itDias" value="#{activeItem.days}"
+			required="true" requiredMessage="El campo Número de usos es requerido">
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:inputText>
+		
+
+	</h:panelGrid>
+
+
+</ui:composition>

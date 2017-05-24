@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+	<o:methodParam name="method" value="#{bean.returnLocation}" />
+
+	<h:panelGrid columns="2">
+
+
+		<p:outputLabel value="Producto:" for="otProductEdit" />
+		<h:panelGrid columns="2">
+			<h:inputText id="otProductEdit" value="#{activeItem.MProductId.name}"
+				readonly="true" size="40"></h:inputText>
+			<p:commandButton
+				actionListener="#{mProductView.view(activeItem.MProductId)}"
+				icon="ui-icon-search" title="Buscar" process="@this">
+				<p:ajax event="dialogReturn" listener="#{method}"
+					update="otProductEdit" />
+			</p:commandButton>
+
+		</h:panelGrid>
+		
+		<p:outputLabel value="Bodega:" for="itHuecoEdit" />
+		<h:panelGrid columns="2">
+			<h:outputText id="itHuecoEdit" value="#{activeItem.MLocatorId.value}"></h:outputText> 
+			<p:commandButton actionListener="#{mLocatorView.view(activeItem.MLocatorId)}" icon="ui-icon-search" title="Buscar" process="@this" > 
+				<p:ajax event="dialogReturn" listener="#{method}" update="itHuecoEdit" />  
+			</p:commandButton>
+			 
+		</h:panelGrid>
+
+		<p:outputLabel value="Tipo producción:" for="somPTypeEdit" />
+		<p:selectOneMenu id="somPTypeEdit" value="#{activeItem.productiontype}" converter="#{productionTypeConverter}" >
+			<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+				itemValue="#{null}" />
+			<f:selectItems value="#{bean.listProductionType}" var="type"
+				itemLabel="#{type.enumValue}" itemValue="#{type}" />
+			<p:ajax event="change" process="@this" ></p:ajax> 
+		</p:selectOneMenu>
+		
+		
+		<p:outputLabel value="Cantidad:" for="itQuanEdit" />
+		<p:inputText id="itQuanEdit" value="#{activeItem.movementqty}">
+			<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+		</p:inputText>
+		
+		<p:outputLabel value="Cantidad rechazadas:" for="itRejectedEdit" />
+		<p:inputText id="itRejectedEdit" value="#{activeItem.rejectedquantity}">
+			<f:validateLongRange minimum="0" maximum="99999"></f:validateLongRange>
+		</p:inputText>
+
+
+
+	</h:panelGrid>
+
+
+</ui:composition>

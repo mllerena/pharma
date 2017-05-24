@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+
+	<h:panelGrid columns="2">
+
+		<p:outputLabel value="Código:" for="itCodigo" />
+		<p:inputText id="itCodigo" value="#{bean.filterEntity.id}" />
+
+		<p:outputLabel value="Usuario:" for="itUsuario" />
+		<p:inputText id="itUsuario" value="#{bean.filterEntity.usuario}" />
+
+		<p:outputLabel value="Nombres:" for="itNombre" />
+		<p:inputText id="itNombre" value="#{bean.filterEntity.nombre}" />
+
+		<p:outputLabel value="Apellido" for="itApellido" />
+		<p:inputText id="itApellido" value="#{bean.filterEntity.apellido}" />
+
+
+		<p:outputLabel value="Teléfono fijo:" for="itTelefonoFijo" />
+		<p:inputText id="itTelefonoFijo"
+			value="#{bean.filterEntity.telefonoFijo}" />
+
+		<p:outputLabel value="Teléfono móvil:" for="itTelefonoMovil" />
+		<p:inputText id="itTelefonoMovil"
+			value="#{bean.filterEntity.telefonoMovil}" />
+
+
+	</h:panelGrid>
+
+
+
+</ui:composition>

@@ -1,0 +1,15 @@
+cl@ve_buhtihEC_d35@
+
+
+
+http://localhost:8080/dashbuilder/workspace/jbpm-dashboard
+
+
+http://localhost:8080/dashbuilder/workspace/jbpm-dashboard
+
+
+el argumento de consulta a ejecutar en EXECUTE es null
+
+
+- clave de movimientos quitar 
+- migrar las bodegas

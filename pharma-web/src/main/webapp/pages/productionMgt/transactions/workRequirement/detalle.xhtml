@@ -1,0 +1,338 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+
+
+
+
+	<h:panelGrid columns="6">
+
+
+
+		<p:outputLabel value="Lote:" for="itLote" />
+		<p:inputText id="itLote"
+			value="#{maWorkrequirementController.currentEntity.lot}"
+			readonly="true" />
+
+
+		<p:outputLabel value="Plan de producción:" for="acProcessplanEdit" />
+		<p:autoComplete id="acProcessplanEdit" style="width:100%;"
+			value="#{maWorkrequirementController.currentEntity.maProcessplanId}"
+			completeMethod="#{bean.completeProcessplan}" var="rowComp"
+			itemLabel="#{rowComp.name}" itemValue="#{rowComp}"
+			converter="#{maProcessplanConverter}" forceSelection="true"
+			dropdown="true" emptyMessage="No hay datos para mostrar">
+
+			<p:ajax event="itemSelect"
+				listener="#{maWorkrequirementController.handlerProcessPlan()}"
+				update="itRatioConversionEdit itUnidadProcesoEdit somExplotarFasesEdit"></p:ajax>
+
+			<p:column>
+				<h:outputText value="#{rowComp.id}" />
+			</p:column>
+
+			<p:column>
+				<h:outputText value="#{rowComp.name}" />
+			</p:column>
+
+		</p:autoComplete>
+
+		<p:outputLabel value="Ratio de conversión:"
+			for="itRatioConversionEdit" />
+		<p:inputText id="itRatioConversionEdit"
+			value="#{bean.currentEntity.conversionrate}"
+			title="Nº de unidades que se producen al ejecutar el plan 1 vez"
+			readonly="true">
+		</p:inputText>
+
+	<!-- 	<p:outputLabel value="Unidad de proceso:" for="itUnidadProcesoEdit" />
+		<p:inputText id="itUnidadProcesoEdit"
+			value="#{bean.currentEntity.secondaryunit}"
+			title="El resultado del proceso de producción">
+		</p:inputText> -->
+
+		<p:outputLabel value="Explotar fases:" for="somExplotarFasesEdit" />
+		<p:selectOneMenu id="somExplotarFasesEdit"
+			value="#{bean.currentEntity.explodephases}" required="true"
+			requiredMessage="El campo explotar fase es requerido">
+			<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+				itemValue="#{null}" />
+			<f:selectItems value="#{bean.listYesNo}" var="type"
+				itemLabel="#{type.enumValue}" itemValue="#{type}" />
+		</p:selectOneMenu>
+
+
+
+
+		<p:outputLabel value="Cantidad:" for="itQuantityEdit" />
+		<p:inputText id="itQuantityEdit"
+			value="#{maWorkrequirementController.currentEntity.quantity}"
+			title="Nº de veces que ejecuto el plan">
+			<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+		</p:inputText>
+
+		<p:outputLabel value="Cantidad secundaria:"
+			for="itQuantitySecundaryEdit" />
+		<p:inputText id="itQuantitySecundaryEdit"
+			value="#{maWorkrequirementController.currentEntity.secondaryqty}"
+			title="nº de unidades físicas obtenidas al ejecutar el plan las veces que sea">
+			<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+		</p:inputText>
+
+		<p:outputLabel value="Fecha lanzamiento:" for="cDateLaunched" />
+		<p:calendar id="cDateLaunched"
+			value="#{maWorkrequirementController.currentEntity.launchdate}"
+			pattern="dd-MM-yyyy" placeholder="dd-MM-yyyy"></p:calendar>
+
+		<p:outputLabel value="Fecha inicio:" for="cStartDate" />
+		<p:calendar id="cStartDate"
+			value="#{maWorkrequirementController.currentEntity.startdate}"
+			pattern="dd-MM-yyyy" placeholder="dd-MM-yyyy"></p:calendar>
+
+		<p:outputLabel value="Fecha fin:" for="cEndDate" />
+		<p:calendar id="cEndDate"
+			value="#{maWorkrequirementController.currentEntity.enddate}"
+			pattern="dd-MM-yyyy" placeholder="dd-MM-yyyy"></p:calendar>
+
+
+		<p:outputLabel value="Procesado:" for="itProcessed" />
+		<p:inputText id="itProcessed"
+			value="#{bean.currentEntity.processed.enumValue}" readonly="true">
+		</p:inputText>
+
+
+
+
+	</h:panelGrid>
+	<br clear="all"></br>
+
+
+	<p:tabView id="tvCabeceraFases"
+		rendered="#{bean.currentEntity.id ne null}">
+
+		<p:tab title="Fases de Orden de fabricación">
+
+			<pr:dataList id="dlFases" dataList="#{bean.detalleFases}"
+				rowKey="#{row.id}" title="Fases" auditable="false">
+
+				<!-- <p:column headerText="Código">
+					<h:outputText value="#{row.id}" />
+				</p:column> -->
+
+				<!-- <p:column sortBy="#{row.name}" headerText="Nombre">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.name}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{row.name}"></p:inputText>
+						</f:facet>
+					</p:cellEditor>
+				</p:column> -->
+				
+				<p:column headerText="Secuencia">
+					<h:outputText value="#{row.maSequenceId.name}" /> 
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.maSequenceId.name}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:autoComplete id="acSecuencia" value="#{row.maSequenceId}" 
+								completeMethod="#{bean.completeSequence}" var="mach"
+								itemLabel="#{mach.name}" itemValue="#{mach}"
+								converter="#{maSequenceConverter}" forceSelection="true" 
+								dropdown="true" emptyMessage="No hay datos para mostrar" >
+								<p:ajax event="itemSelect"
+									listener="#{maWorkrequirementController.handlerSequence()}"
+									update="otProcessSequence"></p:ajax> 
+								</p:autoComplete>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Proceso">
+					<h:outputText id="otProcessSequence" value="#{row.maProcessId.name}" />
+				</p:column>
+
+				<p:column headerText="Uso centro de costo">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.costcenteruse}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{row.costcenteruse}">
+								<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+							</p:inputText>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Tiempo de preparación">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.preptime}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{row.preptime}">
+								<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+							</p:inputText>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+
+				<p:column headerText="Cantidad Vacía">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.noqty.enumValue}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{row.noqty}">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listYesNo}" var="type"
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Uso global">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.groupuse.enumValue}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{row.groupuse}">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listYesNo}" var="type"
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Subcontrato">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.outsourced.enumValue}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{row.outsourced}">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listYesNo}" var="type"
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+
+
+			</pr:dataList>
+
+			<pr:dataModal title="Fase" for="dlFases"
+				dataList="#{bean.detalleFases}" width="450" height="350">
+				<ui:include
+					src="/pages/productionMgt/transactions/workRequirement/editSecuencia.xhtml"></ui:include>
+			</pr:dataModal>
+
+
+
+			<br clear="all"></br>
+
+		</p:tab>
+
+
+
+
+
+
+	</p:tabView>
+
+	<p:tabView id="tvDetalleFase"
+		rendered="#{bean.currentEntity.id ne null}">
+
+		<p:tab title="I/O Productos">
+			<pr:dataList id="dlIOProductoFases"
+				dataList="#{bean.detalleIOProducto}" rowKey="#{row.id}"
+				title="Entrada/Salida Producto - Fase: #{bean.detalleFases.activeItem.id}"
+				auditable="false">
+
+				<!-- <p:column headerText="Código">
+					<h:outputText value="#{row.id}" />
+				</p:column> -->
+
+				<p:column headerText="Producto">
+					<h:outputText value="#{row.MProductId.name}" />
+				</p:column>
+
+				<p:column headerText="Tipo de producción">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.productiontype.enumValue}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{row.productiontype}">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listProductionType}" var="type"
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Cantidad">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.movementqty}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{row.movementqty}">
+								<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+							</p:inputText>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Costo componente">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.componentcost}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{row.componentcost}">
+								<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+							</p:inputText>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+			</pr:dataList>
+
+			<pr:dataModal title="Producto" for="dlIOProductoFases"
+				dataList="#{bean.detalleIOProducto}" width="450" height="350">
+				<ui:include
+					src="/pages/productionMgt/transactions/workRequirement/editIOProduct.xhtml"></ui:include>
+			</pr:dataModal>
+
+
+			<br clear="all"></br>
+
+		</p:tab>
+	</p:tabView>
+
+
+
+
+</ui:composition>

@@ -1,0 +1,239 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+
+
+
+	<h:panelGrid columns="6">
+
+		<p:outputLabel value="Nombre:" for="itNombreEdit" />
+		<p:inputText id="itNombreEdit" value="#{bean.currentEntity.name}"
+			required="true" requiredMessage="El campo Nombre es requerido"
+			size="50" maxlength="60">
+		</p:inputText>
+
+		<p:outputLabel value="Calculado:" for="somCalcEdit" />
+		<p:selectOneMenu id="somCalcEdit"
+			value="#{bean.currentEntity.calculated}">
+			<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+				itemValue="#{null}" />
+			<f:selectItems value="#{bean.listYesNo}" var="type"
+				itemLabel="#{type.enumValue}" itemValue="#{type}" />
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:selectOneMenu>
+
+		<p:outputLabel value="Por defecto:" for="somDefaultEdit" />
+		<p:selectOneMenu id="somDefaultEdit"
+			value="#{bean.currentEntity.bydefault}">
+			<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+				itemValue="#{null}" />
+			<f:selectItems value="#{bean.listYesNo}" var="type"
+				itemLabel="#{type.enumValue}" itemValue="#{type}" />
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:selectOneMenu>
+
+	</h:panelGrid>
+	<br clear="all"></br>
+
+	<p:tabView id="tvDetalles" rendered="#{bean.currentEntity.id ne null}">
+
+		<p:tab id="tVersion" title="Versión">
+
+			<pr:dataList id="dlCostVersion"
+				dataList="#{bean.detalleCentroCostoVersion}" rowKey="#{row.id}"
+				title="Costos asociados" rendered="#{bean.currentEntity.id ne null}">
+
+				<p:column headerText="Código">
+					<h:outputText value="#{row.id}" />
+				</p:column>
+
+				<p:column headerText="N° documento">
+					<h:outputText value="#{row.documentno}" />
+				</p:column>
+
+				<p:column headerText="Válido desde">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.validfrom}">
+								<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" type="both" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:calendar value="#{row.validfrom}" pattern="dd-MM-yyyy"
+								placeholder="dd-MM-yyyy" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Costo" style="text-align: right;">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.cost}" style="text-align: right;">
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="itCostE" value="#{row.cost}"></p:inputText>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Unidad de medida de costo">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.costuom.enumValue}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{row.costuom}" style="width:100%;">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listCostUOM}" var="uom"
+									itemLabel="#{uom.enumValue}" itemValue="#{uom}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+			</pr:dataList>
+
+			<pr:dataModal title="Costo Máquina" for="dlCostVersion"
+				dataList="#{bean.detalleCentroCostoVersion}" width="430"
+				height="250">
+				<ui:include src="/pages/productionMgt/setup/costCenter/edit.xhtml"></ui:include>
+			</pr:dataModal>
+
+		</p:tab>
+	</p:tabView>
+
+
+	<br clear="all"></br>
+
+	<p:tabView id="tvDetallesVersiones"
+		rendered="#{bean.currentEntity.id ne null}">
+
+		<p:tab id="templeado" title="Categoría Salarial/Empleado">
+
+			<pr:dataList id="dlCatSalarialVer"
+				dataList="#{maCostcenterController.detalleEmpleado}"
+				rowKey="#{row.id}"
+				title="Empleados de versión: #{maCostcenterController.detalleCentroCostoVersion.activeItem.id}"
+				rendered="#{bean.currentEntity.id ne null}">
+
+				<p:column headerText="Código">
+					<h:outputText value="#{row.id}" />
+				</p:column>
+
+				<p:column headerText="Categoria Salarial">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.CSalaryCategoryId.name}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:autoComplete value="#{row.CSalaryCategoryId}"
+								completeMethod="#{maCostcenterController.completeCategoriasSalariales}"
+								var="match" itemLabel="#{match.name}" itemValue="#{match}"
+								converter="#{cSalaryCategoryConverter}" forceSelection="true"
+								required="true"
+								requiredMessage="El campo Categoría Salarial es requerido"
+								dropdown="true" />
+
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column headerText="Unidad de medida de costo">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.costuom.enumValue}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{row.costuom}" style="width:100%;">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listCostUOM}" var="uom"
+									itemLabel="#{uom.enumValue}" itemValue="#{uom}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Cantidad">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.quantity}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{row.quantity}"></p:inputText> 
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+			</pr:dataList>
+
+			<pr:dataModal title="Categoría Salarial" for="dlCatSalarialVer"
+				dataList="#{maCostcenterController.detalleEmpleado}" width="430"
+				height="250">
+				<ui:include src="/pages/productionMgt/setup/costCenter/editSalaryCategory.xhtml"></ui:include>
+			</pr:dataModal>
+
+		</p:tab>
+		
+		<p:tab id="tmachine" title="Máquina">
+
+			<pr:dataList id="dlMachineVersion"
+				dataList="#{maCostcenterController.detalleMaquina}"
+				rowKey="#{row.id}"
+				title="Empleados de versión: #{maCostcenterController.detalleCentroCostoVersion.activeItem.id}"
+				rendered="#{bean.currentEntity.id ne null}">
+
+				<p:column headerText="Código">
+							<h:outputText value="#{row.id}" />
+						</p:column>
+
+						<p:column headerText="Máquina">
+							<p:cellEditor>
+				               <f:facet name="output"><h:outputText value="#{row.maMachineId.name}" /></f:facet>
+				               <f:facet name="input">   
+				               <p:autoComplete 
+													value="#{row.maMachineId}" 
+													completeMethod="#{maCostcenterController.completeMaquinas}"  
+													var="match" itemLabel="#{match.name}" itemValue="#{match}" 
+													converter="#{maMachineConverter}" forceSelection="true"   
+													required="true" requiredMessage="El campo Máquina es requerido" 
+													dropdown="true" />
+				               
+				               </f:facet>
+				           </p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Uso">  
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{row.use}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{row.use}"></p:inputText>  
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+			</pr:dataList>
+
+			<pr:dataModal title="Máquinas" for="dlMachineVersion"
+				dataList="#{maCostcenterController.detalleMaquina}" width="430"
+				height="250">
+				<ui:include src="/pages/productionMgt/setup/costCenter/editMachine.xhtml"></ui:include>
+			</pr:dataModal>
+
+		</p:tab>
+		
+	</p:tabView>
+
+</ui:composition>

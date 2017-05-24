@@ -1,0 +1,154 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+
+	<h:panelGrid columns="4">
+
+		<h:outputText value="Tratamiento:" />
+		<p:autoComplete id="acTratamiento"
+			value="#{bean.currentEntity.CGreetingId}"
+			completeMethod="#{bean.completeGreeting}" var="greet"
+			itemLabel="#{greet.name}" itemValue="#{greet}"
+			converter="#{cGreetingConverter}" forceSelection="true"
+			dropdown="true" />
+
+
+
+
+		<h:outputText value="Nombre comercial:" />
+		<p:inputText id="nombrecomercial" value="#{bean.currentEntity.name}"
+			required="true"
+			requiredMessage="El campo Nombre comercial es requerido"
+			label="nombrecomercial" size="35">
+		</p:inputText>
+
+
+
+		<h:outputText value="Descripción:" />
+		<p:inputTextarea id="descripcion"
+			value="#{bean.currentEntity.description}" label="descripcion"
+			cols="50" rows="3" maxlength="255">
+		</p:inputTextarea>
+
+
+
+		
+
+
+		<h:outputText value="Grupos de terceros:" />
+		<p:autoComplete id="acGruposTerceros"
+			value="#{bean.currentEntity.CBpGroupId}"
+			completeMethod="#{bean.completeBpGroup}" var="tercero"
+			itemLabel="#{tercero.name}" itemValue="#{tercero}"
+			converter="#{cBpGroupConverter}" forceSelection="true"
+			dropdown="true" required="true"
+			requiredMessage="El campo Grupos de terceros es requerido" />
+			
+			
+
+
+
+	</h:panelGrid>
+	<br clear="all" />
+
+
+	<p:tabView id="tvDetalles" rendered="#{bean.currentEntity.id ne null}">
+		<p:tab id="tCliente" title="Cliente">
+			<h:panelGrid columns="4">
+				
+				<h:outputText value="Cliente:" />
+				<p:selectOneMenu value="#{bean.currentEntity.iscustomer}">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listYesNo}" var="type" 
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+							</p:selectOneMenu>	
+				
+				<h:outputText value="Exento de impuesto:" />
+				<p:selectOneMenu value="#{bean.currentEntity.istaxexempt}">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listYesNo}" var="type" 
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+							</p:selectOneMenu>
+				
+			</h:panelGrid>	
+		</p:tab>
+		<p:tab id="tProveedor" title="Proveedor">
+			<h:panelGrid columns="2">
+				<h:outputText value="Proveedor:" />
+				<p:selectOneMenu value="#{bean.currentEntity.isvendor}">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listYesNo}" var="type" 
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+							</p:selectOneMenu>	
+			</h:panelGrid>	
+		</p:tab>
+		<p:tab id="tEmpleado" title="Empleado">
+			<h:panelGrid columns="4">
+				<h:outputText value="Empleado:" />
+				<p:selectOneMenu value="#{bean.currentEntity.isemployee}">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listYesNo}" var="type" 
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+							</p:selectOneMenu>		
+					
+					
+				<h:outputText value="Agente comercial:" />
+				<p:selectOneMenu value="#{bean.currentEntity.issalesrep}">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listYesNo}" var="type" 
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+							</p:selectOneMenu>	
+			</h:panelGrid>	
+		</p:tab>
+		<p:tab id="tDirecciones" title="Direcciones">
+
+			<pr:dataList id="dlDirecciones" dataList="#{bean.detalleDirecciones}"
+				rowKey="#{row.id}" title="Lista de Direcciones"
+				rendered="#{bean.currentEntity.id ne null}">
+
+				<p:column headerText="Código">
+					<h:outputText value="#{row.id}" />
+				</p:column>
+
+				<p:column headerText="Nombre">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.name}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{row.name}"></p:inputText>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Direcciones">
+					<h:outputText value="#{row.CLocationId.address1}" />
+				</p:column>
+
+			</pr:dataList>
+
+
+
+
+			<pr:dataModal title="Dirección" for="dlDirecciones"
+				dataList="#{bean.detalleDirecciones}" width="650" height="320">
+				<ui:include src="/pages/masterDataMgt/bPartner/edit.xhtml"></ui:include>
+			</pr:dataModal>
+
+		</p:tab>
+	</p:tabView>
+
+
+</ui:composition>

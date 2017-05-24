@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+
+	<h:panelGrid columns="2">
+
+		<p:outputLabel value="Identificador:" for="itIdEdit" />
+		<p:inputText id="itIdEdit" value="#{activeItem.value}">
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:inputText>
+
+		<p:outputLabel value="Estantería (X):" for="itXEdit" />
+		<p:inputText id="itXEdit" value="#{activeItem.x}">
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:inputText>
+
+		<p:outputLabel value="Columna (Y):" for="itYEdit" />
+		<p:inputText id="itYEdit" value="#{activeItem.y}">
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:inputText>
+
+		<p:outputLabel value="Altura (Z):" for="itZEdit" />
+		<p:inputText id="itZEdit" value="#{activeItem.z}">
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:inputText>
+
+		<p:outputLabel value="Prioridad Relativa:" for="itPrioriEdit" />
+		<p:inputText id="itPrioriEdit" value="#{activeItem.priorityno}">
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:inputText>
+
+
+		<p:outputLabel value="Valor por defecto:" for="somDefault" />
+		<p:selectOneMenu id="somDefault" value="#{activeItem.isdefault}"
+			converter="#{yesNoConverter}">
+			<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+				itemValue="#{null}" />
+			<f:selectItems value="#{bean.listYesNo}" var="type"
+				itemLabel="#{type.enumValue}" itemValue="#{type}" />
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:selectOneMenu>
+
+
+
+
+
+	</h:panelGrid>
+
+</ui:composition>

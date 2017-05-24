@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+
+	<h:panelGrid columns="4">
+
+		<p:outputLabel value="Nombre:" for="itNombreEdit" />
+		<p:inputText id="itNombreEdit" value="#{bean.currentEntity.name}"
+			required="true" requiredMessage="El campo Nombre es requerido"
+			size="50" maxlength="60">
+		</p:inputText>
+
+		<p:outputLabel value="Sección:" for="itAreaEdit" />
+		<p:autoComplete id="itAreaEdit"
+			value="#{bean.currentEntity.maSectionId}"
+			completeMethod="#{bean.completeSections}" var="area"
+			itemLabel="#{area.name}" itemValue="#{area}"
+			converter="#{maSectionConverter}" forceSelection="true"
+			dropdown="true" emptyMessage="No hay datos para mostrar" />
+
+
+
+	</h:panelGrid>
+	<br clear="all"></br>
+
+	<p:tabView id="tvDetalles" rendered="#{bean.currentEntity.id ne null}">
+
+		<p:tab id="tMachinestation" title="Máquina Puesto">
+
+			<pr:dataList id="dlMachine" dataList="#{bean.detalleMaquinas}"
+				rowKey="#{row.id}" title="Lista de máquinas asociadas"
+				rendered="#{bean.currentEntity.id ne null}">
+
+				<p:column headerText="Código">
+					<h:outputText value="#{row.id}" />
+				</p:column>
+
+				<p:column headerText="Máquina">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.maMachineId.name}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:autoComplete id="acMachine" value="#{row.maMachineId}"
+								completeMethod="#{bean.completeMachine}" var="mach"
+								itemLabel="#{mach.name}" itemValue="#{mach}"
+								converter="#{maMachineConverter}" forceSelection="true"
+								dropdown="true" emptyMessage="No hay datos para mostrar" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+			</pr:dataList>
+
+
+			<pr:dataModal title="Máquina Puesto" for="dlMachine"
+				dataList="#{bean.detalleMaquinas}" width="350" height="150">
+				<ui:include src="/pages/productionMgt/setup/workCenter/edit.xhtml"></ui:include>
+			</pr:dataModal>
+
+		</p:tab>
+
+		<p:tab id="tProcess" title="Procesos">
+
+
+			<pr:dataTable id="dtProcess" dataTable="#{bean.detalleProcesos}"
+				title="Lista de procesos asociadas" rowKey="#{row.id}" renderedSelectionMode="false"> 
+
+				<p:column sortBy="#{row.id}" headerText="Código">
+					<h:outputText value="#{row.id}" />
+				</p:column>
+
+				<p:column sortBy="#{row.name}" headerText="Nombre">
+					<h:outputText value="#{row.name}" />
+				</p:column>
+
+			</pr:dataTable>
+
+		</p:tab>
+
+	</p:tabView>
+
+</ui:composition>

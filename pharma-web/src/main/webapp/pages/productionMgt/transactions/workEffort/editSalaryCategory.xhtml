@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<h:panelGrid columns="2">
+
+
+		<p:outputLabel value="Categoria Salarial:" for="ocSalCategory" />
+		<p:autoComplete id="ocSalCategory"
+			value="#{activeItem.CSalaryCategoryId}"
+			completeMethod="#{mProductionController.completeCategoriasSalariales}"
+			var="match" itemLabel="#{match.name}" itemValue="#{match}"
+			converter="#{cSalaryCategoryConverter}" forceSelection="true"
+			required="true"
+			requiredMessage="El campo Categoría Salarial es requerido"
+			dropdown="true">
+
+			<p:ajax event="itemSelect" process="@this"></p:ajax>
+		</p:autoComplete>
+
+		<p:outputLabel value="Cantidad de empleados:" for="itCantEmpleado" />
+		<p:inputText id="itCantEmpleado" value="#{activeItem.quantity}">
+			<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+		</p:inputText>
+
+
+
+	</h:panelGrid>
+
+
+</ui:composition>

@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<pr:dataTable id="dtResult" dataTable="#{bean.dataTable}" selection="#{bean.currentEntity}" rowKey="#{row.id}">
+       
+		<p:column sortBy="#{row.id}" headerText="Código">
+			<h:outputText value="#{row.id}" />
+		</p:column>
+		
+		<p:column headerText="Tipo de movimiento">
+			<h:outputText value="#{row.movementtype.enumValue}" />
+		</p:column>
+		
+		<p:column sortBy="#{row.movementdate}" headerText="Fecha movimiento" width="130">
+			<h:outputText value="#{row.movementdate}">
+				<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" type="both" />
+			</h:outputText>
+		</p:column>
+		
+		<p:column headerText="Cantidades movidas">
+			<h:outputText value="#{row.movementqty}" />
+		</p:column>
+	
+	</pr:dataTable>
+
+</ui:composition>

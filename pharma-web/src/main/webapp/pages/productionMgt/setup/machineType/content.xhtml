@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/resources/templates/bodyTabTemplate.xhtml" >
+
+
+	<ui:param name="bean" value="#{maMachineTypeController}" />   
+
+
+	<ui:define name="filtro">
+			<ui:include src="/pages/productionMgt/setup/machineType/filtro.xhtml"></ui:include>
+	</ui:define>
+	
+	<ui:define name="resultado">
+			<ui:include src="/pages/productionMgt/setup/machineType/resultado.xhtml"></ui:include>
+	</ui:define> 
+	
+	<ui:define name="detalle">
+			<ui:include src="/pages/productionMgt/setup/machineType/detalle.xhtml"></ui:include>
+	</ui:define>
+
+
+
+</ui:composition>

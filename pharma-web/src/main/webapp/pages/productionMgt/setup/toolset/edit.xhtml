@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui" 
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<o:methodParam name="method" value="#{bean.returnLocation}" />
+
+
+	<h:panelGrid columns="2">
+
+		<p:outputLabel value="Identificador:" for="itIdentifica" />
+		<p:inputText id="itIdentifica" value="#{activeItem.value}"
+			required="true" requiredMessage="El campo Identificador es requerido">
+		</p:inputText>
+
+		<p:outputLabel value="Rechazado:" for="itRechazado" />
+		<p:selectOneMenu id="itRechazado" value="#{activeItem.discarded}"
+			required="true" requiredMessage="El campo Recahazado es requerido" 
+			converter="#{yesNoConverter}" > 
+			<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+				itemValue="#{null}" />
+			<f:selectItems value="#{bean.listYesNo}" var="type"
+				itemLabel="#{type.enumValue}" itemValue="#{type}" />
+		</p:selectOneMenu>
+		
+		<p:outputLabel value="Número de usos:" for="itNumeroUsos" />
+		<p:inputText id="itNumeroUsos" value="#{activeItem.numberuses}"
+			required="true" requiredMessage="El campo Número de usos es requerido">
+		</p:inputText>
+		
+		<p:outputLabel value="Hueco:" for="itHuecoEdit" />
+		<h:panelGrid columns="2">
+			<h:outputText id="itHuecoEdit" value="#{activeItem.MLocatorId.value}"></h:outputText> 
+			<p:commandButton actionListener="#{mLocatorView.view(activeItem.MLocatorId)}" icon="ui-icon-search" title="Buscar" process="@this" > 
+				<p:ajax event="dialogReturn" listener="#{method}" update="itHuecoEdit" />  
+			</p:commandButton>
+			 
+		</h:panelGrid>
+
+	</h:panelGrid>
+
+
+</ui:composition>

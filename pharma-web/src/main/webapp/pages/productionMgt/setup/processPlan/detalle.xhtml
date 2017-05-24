@@ -1,0 +1,367 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+	<h:panelGrid columns="2">
+		<h:panelGrid columns="4">
+
+			<p:outputLabel value="Nombre:" for="itNombreEdit" />
+			<p:inputText id="itNombreEdit" value="#{bean.currentEntity.name}"
+				required="true" requiredMessage="El campo Nombre es requerido"
+				size="50" maxlength="60">
+			</p:inputText>
+
+			<p:outputLabel value="Descripción:" for="itDescripcionEdit" />
+			<p:inputTextarea id="itDescripcionEdit"
+				value="#{bean.currentEntity.description}" label="descripcion"
+				cols="50" rows="3" maxlength="255">
+			</p:inputTextarea>
+
+
+			<!-- <p:outputLabel value="Unidad de proceso:" for="itUnidadProcesoEdit" />
+			<p:inputText id="itUnidadProcesoEdit"
+				value="#{bean.currentEntity.secondaryunit}" required="true"
+				requiredMessage="El campo Unidad de proceso es requerido"
+				title="El resultado del proceso de producción" readonly="true">
+			</p:inputText> -->
+
+			<p:outputLabel value="Ratio de Conversión:"
+				for="itRatioConversionEdit" />
+			<p:inputText id="itRatioConversionEdit"
+				value="#{bean.currentEntity.conversionrate}"
+				title="Nº de unidades que se producen al ejecutar el plan 1 vez" >
+				<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+			</p:inputText>
+
+			<p:outputLabel value="Explotar fases:" for="somExplotarFasesEdit" />
+			<p:selectOneMenu id="somExplotarFasesEdit"
+				value="#{bean.currentEntity.explodephases}" required="true"
+				requiredMessage="El campo explotar fase es requerido">
+				<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+					itemValue="#{null}" />
+				<f:selectItems value="#{bean.listYesNo}" var="type"
+					itemLabel="#{type.enumValue}" itemValue="#{type}" />
+			</p:selectOneMenu>
+
+
+		</h:panelGrid>
+		
+		<h:panelGrid>
+
+		<pr:dataList id="dlVersionProcess" dataList="#{bean.detalleVersion}"
+			rowKey="#{row.id}" title="Versiones asociados"
+			rendered="#{bean.currentEntity.id ne null}" auditable="false">
+
+			<p:column headerText="Código">
+				<h:outputText value="#{row.id}" />
+			</p:column>
+
+			<p:column headerText="N° Documento">
+				<h:outputText value="#{row.documentno}" />
+			</p:column>
+
+			<p:column headerText="Desde la fecha">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{row.datefrom}">
+							<f:convertDateTime pattern="dd-MM-yyyy" />
+						</h:outputText>
+					</f:facet>
+					<f:facet name="input">
+						<p:calendar value="#{row.datefrom}" pattern="dd-MM-yyyy"
+							placeholder="dd-MM-yyyy" >
+							<p:ajax event="dateSelect" update="fHasta"></p:ajax>
+							</p:calendar>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="Fecha hasta">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{row.dateto}">
+							<f:convertDateTime pattern="dd-MM-yyyy" />
+						</h:outputText>
+					</f:facet>
+					<f:facet name="input">
+						<p:calendar id="fHasta" value="#{row.dateto}" pattern="dd-MM-yyyy"
+							placeholder="dd-MM-yyyy" mindate="#{row.datefrom}"/>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+		</pr:dataList>
+
+		<pr:dataModal title="Versión" for="dlVersionProcess"
+			dataList="#{bean.detalleVersion}" width="430" height="250">
+			<ui:include src="/pages/productionMgt/setup/processPlan/edit.xhtml"></ui:include>
+		</pr:dataModal>
+		
+		</h:panelGrid>
+
+	</h:panelGrid>
+
+	<br clear="all"></br>
+
+	<pr:dataList id="dlSecuencia" dataList="#{bean.detalleSecuencia}"
+		rowKey="#{row.id}"
+		title="Secuencias de Versión: #{bean.detalleVersion.activeItem.id}"
+		auditable="false" rendered="#{bean.currentEntity.id ne null}">
+
+		<p:column headerText="Código">
+			<h:outputText value="#{row.id}" />
+		</p:column>
+
+		<p:column sortBy="#{row.name}" headerText="Nombre">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{row.name}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:inputText value="#{row.name}"></p:inputText>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Proceso">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{row.maProcessId.name}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:autoComplete id="acProceso" value="#{row.maProcessId}"
+						completeMethod="#{bean.completeProcess}" var="mach"
+						itemLabel="#{mach.name}" itemValue="#{mach}"
+						converter="#{maProcessConverter}" forceSelection="true"
+						dropdown="true" emptyMessage="No hay datos para mostrar" />
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Uso centro de costo">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{row.costcenteruse}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:inputText value="#{row.costcenteruse}">
+							<f:validateLongRange minimum="0" maximum="99999"></f:validateLongRange>
+					</p:inputText>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Tiempo de preparación">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{row.preptime}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:inputText value="#{row.preptime}">
+					<f:validateLongRange minimum="0" maximum="99999"></f:validateLongRange>
+					</p:inputText>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Multiplicador">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{row.multiplier}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:inputText value="#{row.multiplier}">
+					<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+					</p:inputText>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+
+		<p:column headerText="Cantidad Vacía">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{row.noqty.enumValue}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:selectOneMenu value="#{row.noqty}">
+						<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+							itemValue="#{null}" />
+						<f:selectItems value="#{bean.listYesNo}" var="type"
+							itemLabel="#{type.enumValue}" itemValue="#{type}" />
+					</p:selectOneMenu>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Uso global">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{row.groupuse.enumValue}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:selectOneMenu value="#{row.groupuse}">
+						<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+							itemValue="#{null}" />
+						<f:selectItems value="#{bean.listYesNo}" var="type"
+							itemLabel="#{type.enumValue}" itemValue="#{type}" />
+					</p:selectOneMenu>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Material usado">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{row.calculated.enumValue}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:selectOneMenu value="#{row.calculated}">
+						<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+							itemValue="#{null}" />
+						<f:selectItems value="#{bean.listYesNo}" var="type"
+							itemLabel="#{type.enumValue}" itemValue="#{type}" />
+					</p:selectOneMenu>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Valor por defecto">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{row.isdefault.enumValue}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:selectOneMenu value="#{row.isdefault}">
+						<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+							itemValue="#{null}" />
+						<f:selectItems value="#{bean.listYesNo}" var="type"
+							itemLabel="#{type.enumValue}" itemValue="#{type}" />
+					</p:selectOneMenu>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+
+
+	</pr:dataList>
+
+	<pr:dataModal title="Secuencia" for="dlSecuencia"
+		dataList="#{bean.detalleSecuencia}" width="450" height="450">
+		<ui:include
+			src="/pages/productionMgt/setup/processPlan/editSecuencia.xhtml"></ui:include>
+	</pr:dataModal>
+
+
+
+	<br clear="all"></br>
+
+	<pr:dataList id="dlIOProducto" dataList="#{bean.detalleIOProducto}"
+		rowKey="#{row.id}"
+		title="Entrada/Salida Productos de la Secuencia: #{bean.detalleSecuencia.activeItem.id}"
+		auditable="false" rendered="#{bean.currentEntity.id ne null}">
+
+		<p:column headerText="Código">
+			<h:outputText value="#{row.id}" />
+		</p:column>
+
+		<p:column headerText="Producto">
+			<h:outputText value="#{row.MProductId.name}" />
+		</p:column>
+
+		<p:column headerText="Tipo de producción">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{row.productiontype.enumValue}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:selectOneMenu value="#{row.productiontype}">
+						<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+							itemValue="#{null}" />
+						<f:selectItems value="#{bean.listProductionType}" var="type"
+							itemLabel="#{type.enumValue}" itemValue="#{type}" />
+					</p:selectOneMenu>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Cantidad">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{row.quantity}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:inputText value="#{row.quantity}">
+					<f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+					</p:inputText>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Porcentaje de disminución">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{row.decrease}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:inputText value="#{row.decrease}">
+					<f:validateLongRange minimum="0" maximum="99999"></f:validateLongRange>
+					</p:inputText>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Porcentaje Piezas rechazadas">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{row.rejected}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:inputText value="#{row.rejected}">
+					<f:validateLongRange minimum="0" maximum="99999"></f:validateLongRange>
+					</p:inputText>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Costo">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{row.cost}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:inputText value="#{row.cost}">
+					<f:validateDoubleRange minimum="1" maximum="99999"></f:validateDoubleRange>
+					</p:inputText>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+	</pr:dataList>
+
+	<pr:dataModal title="Producto" for="dlIOProducto"
+		dataList="#{bean.detalleIOProducto}" width="450" height="350">
+		<ui:include
+			src="/pages/productionMgt/setup/processPlan/editIOProduct.xhtml"></ui:include>
+	</pr:dataModal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ui:composition>

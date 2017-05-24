@@ -1,0 +1,56 @@
+----------------------
+-- planificacion MRP
+----------------------
+
+https://www.dspace.espol.edu.ec/bitstream/123456789/20762/1/articulo_Tesisoriginal%20Santos%20y%20Meza.pdf
+
+http://www.farmacia.unal.edu.co/unciencias/data-file/farmacia/tesis/INCORPORACION%205.pdf
+
+tesis alvarado silva
+
+http://www.evaluandoerp.com/nota-3648-En-Foco-ERP-para-industria-farmaceutica.html
+
+
+pepa
+http://www.cib.espol.edu.ec/digipath/d_tesis_pdf/d-93878.pdf
+
+
+
+ejemplo de macro
+http://www.webandmacros.com/MRPcasopractico1.htm
+
+
+
+
+openbravo
+
+https://soporte900.wordpress.com/2012/09/22/opensource-erps/
+
+http://demo.openbravo.com/erp
+
+http://demo-us1.openbravo.com/erp/org.openbravo.demo.loginpage.security/LoginDemo_F1.html
+
+
+http://riunet.upv.es/bitstream/handle/10251/8590/PFC%20Openbravo%20Rub%E9n%20Pic%F3.pdf?sequence=1
+
+http://elescandallo.blogspot.es/
+
+http://www.golivepyme.com/openbravo-modulo-fabricacion-produccion.aspx
+
+cl@ve_buhtihEC_d35@
+
+-----------------------investigacion plan de produccion
+https://manuelgomariz.wordpress.com/2010/04/04/post-n%C2%BA9-openbravo-configuracion-de-la-produccion/
+
+
+
+
+
+https://github.com/mswiderski/spring-jbpm-app/blob/master/spring-jbpm-web/src/main/java/org/jbpm/spring/web/ProcessInstanceController.java
+
+
+
+
+
+
+http://mswiderski.blogspot.com/2014/11/cross-framework-services-in-jbpm-62.html

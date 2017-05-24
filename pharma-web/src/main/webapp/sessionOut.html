@@ -1,0 +1,63 @@
+<!DOCTYPE HTML >
+<html >
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>PHARMACEUTICAL</title>
+        <style>
+            #container {
+                margin: 0 auto;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                width: 910px;
+                border-radius: 10px;
+                box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+                border: 1px #c7c6c6 solid;
+            }
+            .textcontador{font-size:80px;border:0;text-align:center;background:transparent;}
+            .texttitulo{font-size:26px;}
+            .textlink{font-size:26px;color:#ddd}
+            .labelLogin {color: #198bdf; font-size: 28px; font-weight: bold; text-shadow: 0.05em 0.05em 0.07em #333;}
+        </style>
+    </head>
+    <body>
+
+        <div id="container">
+            <center>
+                <br/><br/>
+                <font class="texttitulo">
+                <b>Su sesión ha expirado, se redireccionará en:</b>
+                </font>
+                <br/><br/>
+                <form name="redirect">
+                    <input class="textcontador" size="1" name="redirect2"/>
+                </form>
+                <br/>
+                <font><b>Segundos</b></font>
+                <br/><br/>
+                <h1 class="labelLogin"> SAMDOC 1.0 </h1>
+            </center>
+            <script>
+                var targetURL="/pharmaceutical-web/"
+
+                var countdownfrom=5
+
+                var currentsecond=document.redirect.redirect2.value=countdownfrom+1
+                function countredirect(){
+                    if (currentsecond!=1){
+                        currentsecond-=1
+                        document.redirect.redirect2.value=currentsecond
+                    }
+                    else{
+                        window.location=targetURL
+                        return
+                    }
+                    setTimeout("countredirect()",1000)
+                }
+
+                countredirect()
+            </script>
+
+        </div>
+
+    </body>
+</html>

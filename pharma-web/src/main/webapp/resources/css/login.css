@@ -1,0 +1,68 @@
+body { 
+    margin: 0; 
+    background: #f8f8f8; 
+    font-family: Arial, Verdana, Tahoma, sans-serif; 
+    font-size: 12px; 
+    
+}
+#background1, #background2, #background3, #background4, #background5 {
+    width: 900px;
+    height: 600px;
+    margin: 0 auto;
+    position: relative;
+}
+#background1 { 
+    margin-top: 10px;
+    background: url('/sico/img/back.jpg') center no-repeat;
+    border-radius: 20px;
+    background-color: #F6F6F6;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.8);
+    border: 1px #555 solid;
+}
+
+.wide { 
+    width: 100%; 
+    float: left; 
+}
+
+.foot { 
+    padding-top: 10px;
+    width: 100%; 
+    float: left; 
+    min-height: 40px; 
+    text-align: center; 
+    font-size: 10px; 
+    color: #888;  
+}
+#login {
+    width: 270px;
+    height: 160px;
+    background: white;
+    border: solid 1px #ccc;
+    position: absolute;
+    left: 40px;
+    top: 40px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.8);
+    padding: 10px;
+    opacity: 0.9;
+
+}
+#login h2 { margin: 10px 0; text-align: center;text-transform: uppercase; color: #555; }
+#login p.error { color: red; text-decoration: blink; }
+
+.botonLogin{
+    
+}
+.botonLogin:hover{
+    background: url("/sico/javax.faces.resource/images/ui-bg_glass_75_79c9ec_1x400.png.jsf?ln=primefaces-start") repeat-x scroll 50% 50% #79C9EC;
+    border: 1px solid #448DAE;
+    color: #026890;
+    font-weight: normal;
+}
+.botonLogin:active{
+    background: url("/sico/javax.faces.resource/images/ui-bg_gloss-wave_50_6eac2c_500x100.png.jsf?ln=primefaces-start") repeat-x scroll 50% 50% #6EAC2C;
+    border: 1px solid #ACDD4A;
+    color: #FFFFFF;
+    font-weight: normal;
+}

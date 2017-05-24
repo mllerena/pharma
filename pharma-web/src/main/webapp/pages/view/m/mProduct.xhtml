@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:o="http://omnifaces.org/ui">
+<f:view contentType="text/html" locale="es" />
+<ui:insert name="metadata"></ui:insert>
+<h:head>
+	<title><ui:insert name="page_title">Productos</ui:insert></title>
+	<!-- <link href="#{request.contextPath}/css/style.css" rel="stylesheet"
+		type="text/css" /> -->
+
+	<h:outputStylesheet name="css/style.css" />
+
+</h:head>
+<h:body>
+
+	<h:form>
+
+		<p:growl id="growlInt" autoUpdate="true" />
+
+		<pr:dataTable id="dtResult" dataTable="#{mProductView.dataTable}"
+			selection="#{mProductView.mProduct}" rowKey="#{row.id}"
+			auditable="false">
+
+			<p:column sortBy="#{row.id}" headerText="Código">
+				<h:outputText value="#{row.id}" />
+			</p:column>
+
+			<p:column sortBy="#{row.name}" headerText="Nombre producto" width="250" filterBy="#{row.name}" filterMatchMode="contains" >
+				<h:outputText value="#{row.name}" />
+			</p:column>
+
+			<p:column headerText="Es BOM">
+				<h:outputText value="#{row.isbom.enumValue}" />
+			</p:column>
+
+			<p:column headerText="Producción">
+				<h:outputText value="#{row.production.enumValue}" />
+
+			</p:column>
+			
+		</pr:dataTable>
+		
+		<br clear="all"></br> 
+		
+		<center>
+		<p:commandButton icon="ui-icon-plus" value="Seleccionar"
+			actionListener="#{mProductView.add()}" process="@this dtResult" />
+		</center>
+
+
+		
+
+	</h:form>
+
+</h:body>
+</html>

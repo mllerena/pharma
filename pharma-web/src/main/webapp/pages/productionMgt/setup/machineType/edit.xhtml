@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+
+	<h:panelGrid columns="2"> 
+
+
+
+		
+
+		<p:outputLabel value="Valor compra:" for="itValorCompra" />
+		<pe:inputNumber id="itValorCompra" value="#{activeItem.purchaseamt}" decimalSeparator="." thousandSeparator=",">
+				<p:ajax event="change" process="@this"></p:ajax>
+		</pe:inputNumber>
+
+		<p:outputLabel value="Costo:" for="itCost" />
+		<pe:inputNumber id="itCost" value="#{activeItem.cost}" decimalSeparator="." thousandSeparator=",">  
+				<p:ajax event="change" process="@this"></p:ajax>
+		</pe:inputNumber>
+		
+		<p:outputLabel value="Válido desde:" for="cValidFrom" />
+		<p:calendar id="cValidFrom" value="#{activeItem.validfrom}"
+			pattern="dd-MM-yyyy" placeholder="dd-MM-yyyy" >
+			<p:ajax event="dateSelect" process="@this"></p:ajax>  
+			</p:calendar> 
+
+		<p:outputLabel value="Unidad de medida de costo:" for="itCostUOM" />
+		<p:selectOneMenu id="itCostUOM" value="#{activeItem.costuom}" required="true" requiredMessage="El valor es requerido" converter="#{costUOMConverter}" >   
+			<f:selectItem itemLabel="Seleccione" noSelectionOption="true" itemValue="#{null}"/>   
+			<f:selectItems value="#{bean.listCostUOM}"  var="uom" itemLabel="#{uom.enumValue}" itemValue="#{uom}" />  
+			<p:ajax event="change" process="@this"></p:ajax>    
+		</p:selectOneMenu>
+
+	</h:panelGrid>
+
+
+</ui:composition>

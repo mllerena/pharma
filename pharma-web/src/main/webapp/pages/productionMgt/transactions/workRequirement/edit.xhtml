@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+
+	<h:panelGrid columns="2"> 
+
+
+
+		
+
+		<p:outputLabel value="N° Documento:" for="itDoc" />
+		<h:outputText id="itDoc" value="#{activeItem.documentno}" />
+		
+		
+		<p:outputLabel value="Desde la fecha:" for="cDateFrom" />
+		<p:calendar id="cDateFrom" value="#{activeItem.datefrom}"
+			pattern="dd-MM-yyyy" placeholder="dd-MM-yyyy" >
+			<p:ajax event="dateSelect" process="@this"></p:ajax>  
+			</p:calendar> 
+
+		<p:outputLabel value="Fecha hasta:" for="cDateTo" />
+		<p:calendar id="cDateTo" value="#{activeItem.dateto}" 
+			pattern="dd-MM-yyyy" placeholder="dd-MM-yyyy" >
+			<p:ajax event="dateSelect" process="@this"></p:ajax>  
+			</p:calendar>
+
+
+	</h:panelGrid>
+
+
+</ui:composition>

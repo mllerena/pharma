@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+
+	<h:panelGrid columns="2">
+
+		<p:outputLabel value="Código:" for="itCodigo" />
+		<p:inputText id="itCodigo" value="#{bean.filterEntity.taskId}" />  
+
+		<p:outputLabel value="Nombre:" for="itName" />
+		<p:inputText id="itName" value="#{bean.filterEntity.name}" />
+
+
+	</h:panelGrid>
+
+
+
+</ui:composition>

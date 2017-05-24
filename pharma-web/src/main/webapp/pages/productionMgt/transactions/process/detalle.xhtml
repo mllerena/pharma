@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:of="http://omnifaces.org/functions">
+
+
+
+
+	<h:panelGrid columns="4">
+
+		<p:outputLabel value="Código:" for="itProcessInstanceId" />
+		<p:inputText id="itProcessInstanceId"
+			value="#{processInstanceDescController.currentEntity.id}"
+			maxlength="60" readonly="true">
+		</p:inputText>
+
+		<p:outputLabel value="Nombre:" for="itNameEdit" />
+		<h:inputText id="itNameEdit"
+			value="#{processInstanceDescController.currentEntity.processName}"
+			readonly="true" size="50">
+		</h:inputText>
+
+		<p:outputLabel value="Descripción:" for="itDescripcion" />
+		<h:inputTextarea id="itDescripcion"
+			value="#{processInstanceDescController.currentEntity.processInstanceDescription}"
+			label="descripcion" readonly="true" cols="50" rows="3"
+			maxlength="255">
+		</h:inputTextarea>
+
+		<p:outputLabel value="Estado:" for="itStatus" />
+
+
+		<c:choose>
+			<c:when test="#{bean.currentEntity.state} == 1}">
+				<h:inputText id="itStatus" value="Activo" readonly="true" />
+			</c:when>
+			<c:when test="#{bean.currentEntity.state} == 2}">
+				<h:inputText id="itStatus" value="Completado" readonly="true" />
+			</c:when>
+			<c:when test="#{bean.currentEntity.state} == 3}">
+				<h:inputText id="itStatus" value="Abortado" readonly="true" />
+			</c:when>
+			<c:otherwise>
+				<h:inputText id="itStatus" value="Desconocido" readonly="true" />
+			</c:otherwise>
+		</c:choose>
+
+		<p:outputLabel value="Creado por:" for="itCreatedBy" />
+		<h:inputText id="itCreatedBy"
+			value="#{processInstanceDescController.currentEntity.initiator}"
+			readonly="true" />
+
+		<p:outputLabel value="Fecha Creación:" for="itCreatedOn" />
+		<h:inputText id="itCreatedOn"
+			value="#{processInstanceDescController.currentEntity.dataTimeStamp}"
+			readonly="true">
+			<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" type="both" />
+		</h:inputText>
+
+	</h:panelGrid>
+
+
+	<p:tabView id="tvDetalles" rendered="#{bean.currentEntity.id ne null}">
+
+		<p:tab id="tTaskInstanceByProcess" title="Tareas activas">
+
+
+			<pr:dataTable id="dtTaskInstances"
+				dataTable="#{processInstanceDescController.currentEntity.activeTasks}"
+				title="Lista de actividades asociadas" rowKey="#{row.id}"
+				renderedSelectionMode="false" auditable="false" > 
+
+				<p:column sortBy="#{row.taskId}" headerText="Código"> 
+					<h:outputText value="#{row.taskId}" />
+				</p:column>
+
+				<p:column sortBy="#{row.name}" headerText="Nombre tarea"> 
+					<h:outputText value="#{row.name}" />
+				</p:column>
+
+				
+				<p:column sortBy="#{row.status}" headerText="Estado">
+					<h:outputText value="#{row.status}" />
+				</p:column>
+
+				<p:column sortBy="#{row.createdOn}" headerText="Creación"
+					width="130">
+					<h:outputText value="#{row.createdOn}">
+						<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" type="both" />
+					</h:outputText>
+				</p:column>
+
+				<p:column sortBy="#{row.actualOwner}" headerText="Usuario actual">
+					<h:outputText value="#{row.actualOwner}" />
+				</p:column>
+
+			</pr:dataTable>
+
+		</p:tab>
+
+	</p:tabView>
+
+
+</ui:composition>

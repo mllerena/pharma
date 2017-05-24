@@ -1,0 +1,214 @@
+/* 
+    Author     : JNK
+*/
+body {
+    color: #616161;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+
+}
+
+#header {
+    background: url('/sico/img/ecuaexcrm.png') left no-repeat, url('/sico/img/icon.png') no-repeat 98% center ;
+    height: 50px;
+    margin: 0 auto;
+    padding: 10px 10px 0;
+    width: auto !important;
+    min-width: 900px;
+    max-width: 90%;
+    color: #000;
+    font-size: 12px;
+    font-family: Verdana,Arial,sans-serif;
+}
+
+#headerFecha{
+    border-radius: 10px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    background: rgba(34,99,163,0.8);
+    margin: 0 auto ;
+    padding: 0;
+    text-align: center;
+    text-shadow: rgba(0,0,0,0.7) 1px 1px 5px;
+    width: auto !important;
+    min-width: 900px;
+    max-width: 90%;
+    font-weight: bold;
+    box-shadow: rgba(0,0,0,0.7) 0px 2px 5px;
+    color: #EEE;
+    font-family: Verdana,Arial,sans-serif;
+}
+
+#cabecera-bloq-der
+{
+    width: 400px;
+    float: right;
+    margin-right: 60px;
+    text-align: right;
+}
+
+#logo {
+    height: 25px;
+    margin: 0 auto;
+    padding: 10px 10px 0;
+
+}
+#container1 {
+    border: 1px black solid;
+
+    height: 100%;
+    margin: 0 auto;
+}
+
+#container {
+    margin: 0 auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 100%;
+    width: auto !important;
+    min-width: 900px;
+    max-width: 90%;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+    border: 1px #c7c6c6 solid;
+}
+
+#content {
+    margin: 0 10px;
+    padding:  0 ;
+
+    border: 0px #98cef7 solid;
+    background-color: #e9e8e8;
+    border-radius: 5px;
+}
+
+#tmpl_menu {
+    margin: 0 10px;
+    padding: 0;
+
+}
+
+#tmpl_footer {
+    border-radius: 5px;
+    margin: 0 auto;
+    padding-right: 10px;
+    text-align: right;
+    height: 15px;
+    font-family: Arial, Verdana, Tahoma, sans-serif; 
+    font-size: 10px; 
+    color: #888;  
+}
+
+#footer{
+    height: 20px;
+    border-radius: 10px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    background: rgba(34,99,163,0.8);
+    margin: 0 auto ;
+    padding-top: 3px;
+    text-align: center;
+    text-shadow: rgba(0,0,0,0.7) 1px 1px 5px;
+    width: 88%;
+    min-width: 890px;;
+    font-weight: bold;
+    color: #EEE;
+    font-family: Verdana,Arial,sans-serif;
+    font-size: 10px;
+    box-shadow: rgba(0,0,0,0.7) 0px 2px 5px;
+}
+
+#exit{
+    background: url('/sico/img/exit.png') left no-repeat;
+    height: 25px;
+    width: 200px;
+}
+.ui-accordion .ui-accordion-content {
+    padding: 3px;
+}
+
+.labelLogin {
+    color: #198bdf;
+    font-size: 28px;
+    font-weight: bold;
+    text-shadow: 0.04em 0.05em 0.05em #333;
+}
+.panelGrid_TopAlign>tbody>tr>td { 
+    vertical-align: top;
+}
+
+.col10{
+    width: 10%;
+}
+.col20{
+    width: 20%;
+}
+.col30{
+    width: 30%;
+}
+.col40{
+    width: 40%;
+}
+.col50{
+    width: 50%;
+    vertical-align: top;
+}
+.col60{
+    width: 60%;
+}
+.col70{
+    width: 70%;
+}
+.col80{
+    width: 80%;
+}
+.col90{
+    width: 90%;
+}
+.col100{
+    width: 100%;
+}
+.center{
+    text-align: center;
+}
+
+.textIn{
+    width: 220px;
+}
+
+.alignTop{
+    vertical-align: top;
+}
+
+#botonExit{
+    background: url("/sico/javax.faces.resource/images/ui-bg_gloss-wave_50_6eac2c_500x100.png.jsf?ln=primefaces-start") repeat-x scroll 50% 50% #6EAC2C;
+    border: 1px solid #ACDD4A;
+    color: #FFFFFF;
+}
+#botonExit:hover{
+    background: url("/sico/javax.faces.resource/images/ui-bg_glass_75_79c9ec_1x400.png.jsf?ln=primefaces-start") repeat-x scroll 50% 50% #79C9EC;
+    border: 1px solid #448DAE;
+    color: #026890;
+    font-weight: normal;
+}
+#botonExit:active{
+    background: url("/sico/javax.faces.resource/images/ui-bg_gloss-wave_45_e14f1c_500x100.png.jsf?ln=primefaces-start") repeat-x scroll 50% top #E14F1C;
+    border: 1px solid #CD0A0A;
+    color: #FFFFFF;
+    font-weight: normal;
+}
+
+.textcontador{font-size:80px;border:0;text-align:center;background:transparent;}
+.texttitulo{font-size:18px;}
+.textlink{font-size:26px;color:#ddd}
+.labelLogin {color: #198bdf; font-size: 28px; font-weight: bold; text-shadow: 0.05em 0.05em 0.07em #333;}
+
+#timeoutSession div {
+    border-radius: 10px;
+    background-color: rgba(255,255,0,0.5);
+    clear: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #FCD113;
+}

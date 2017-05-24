@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui" 
+	xmlns:of="http://omnifaces.org/functions">
+
+
+
+
+	<h:panelGrid columns="4">
+
+		<p:outputLabel value="Nombre:" for="itNombreEdit" />
+		<p:inputText id="itNombreEdit" value="#{bean.currentEntity.name}"
+			required="true"
+			requiredMessage="El campo Nombre es requerido" size="50" maxlength="60">
+		</p:inputText>
+		
+		<p:outputLabel value="Descripción:" for="itDescripcionEdit" />
+		<p:inputTextarea id="itDescripcionEdit"
+			value="#{bean.currentEntity.description}" label="descripcion"
+			cols="50" rows="3" maxlength="255">
+		</p:inputTextarea>
+		
+		
+		<p:outputLabel value="Centro de costo:" for="acCentroCostoEdit" />
+		<p:autoComplete id="acCentroCostoEdit"
+								value="#{bean.currentEntity.maCostcenterId}"  
+								completeMethod="#{bean.completeCostcenter}" var="comp"  
+								itemLabel="#{comp.name}" itemValue="#{comp}" 
+								converter="#{maCostcenterConverter}" forceSelection="true"     
+								dropdown="true" emptyMessage="No hay datos para mostrar">
+		</p:autoComplete>
+		
+		<p:outputLabel value="Puesto de trabajo:" for="acWorkstationEdit" />
+		<p:autoComplete id="acWorkstationEdit"
+								value="#{bean.currentEntity.maWorkstationId}"   
+								completeMethod="#{bean.completeWorkstation}" var="comp"   
+								itemLabel="#{comp.name}" itemValue="#{comp}" 
+								converter="#{maWorkstationConverter}" forceSelection="true"     
+								dropdown="true" emptyMessage="No hay datos para mostrar">
+		</p:autoComplete> 
+		
+
+	</h:panelGrid>
+	<br clear="all"></br>
+	
+	<p:tabView id="tvDetalles" rendered="#{bean.currentEntity.id ne null}">
+	
+		<p:tab id="tToolset" title="Herramienta">  
+
+			<pr:dataList id="dlToolset" dataList="#{bean.detalleHerramienta}" 
+				rowKey="#{row.id}" title="Herramientas asociadas" 
+				rendered="#{bean.currentEntity.id ne null}">
+
+				<p:column headerText="Código"> 
+					<h:outputText value="#{row.id}" />
+				</p:column>
+
+				<p:column headerText="Coef. Uso" >  
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.usecoef}" ></h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{row.usecoef}" title="Número de veces que se necesita el tipo de herramienta seleccionada por cada vez que se ejecute el proceso productivo"></p:inputText>          
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>  
+				
+				
+				<p:column headerText="Tipo Herramienta">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.maToolsetTypeId.name}" /> 
+						</f:facet>
+						<f:facet name="input">
+							<p:autoComplete value="#{row.maToolsetTypeId}" 
+								completeMethod="#{bean.completeToolsetType}" var="comp" 
+								itemLabel="#{comp.name}" itemValue="#{comp}"
+								converter="#{maToolsetTypeConverter}" forceSelection="true" 
+								dropdown="true" emptyMessage="No hay datos para mostrar" />
+
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+
+			</pr:dataList> 
+
+			<pr:dataModal title="Herramienta" for="dlToolset" 
+				dataList="#{bean.detalleHerramienta}" width="430" height="250">    
+				<ui:include src="/pages/productionMgt/setup/process/edit.xhtml"></ui:include>  
+			</pr:dataModal>
+
+		</p:tab>
+	</p:tabView>
+
+</ui:composition>

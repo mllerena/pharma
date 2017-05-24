@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui" 
+	xmlns:of="http://omnifaces.org/functions">
+
+
+
+
+	<h:panelGrid columns="4">
+
+		<p:outputLabel value="Nombre:" for="itNombreEdit" />
+		<p:inputText id="itNombreEdit" value="#{bean.currentEntity.name}"
+			required="true"
+			requiredMessage="El campo Nombre es requerido" size="50" maxlength="60">
+		</p:inputText>
+		
+		<p:outputLabel value="Ciclo de uso:" for="itCiclousoEdit" />
+		<p:inputText id="itCiclousoEdit" value="#{bean.currentEntity.usecycle}"
+			required="true"
+			requiredMessage="El campo Ciclo de uso es requerido" size="50" maxlength="10">
+		</p:inputText>
+		
+		<p:outputLabel value="Descripción:" for="itDescripcionEdit" />
+		<p:inputTextarea id="itDescripcionEdit"
+			value="#{bean.currentEntity.description}" label="descripcion"
+			cols="50" rows="3" maxlength="255">
+		</p:inputTextarea>
+
+	</h:panelGrid>
+	<br clear="all"></br>
+	
+	<p:tabView id="tvDetalles" rendered="#{bean.currentEntity.id ne null}">
+	
+		<p:tab id="tToolset" title="Herramienta">  
+
+			<pr:dataList id="dlToolset" dataList="#{bean.detalleHerramienta}" 
+				rowKey="#{row.id}" title="Herramientas asociadas" 
+				rendered="#{bean.currentEntity.id ne null}">
+
+				<p:column headerText="Código"> 
+					<h:outputText value="#{row.id}" />
+				</p:column>
+				
+				<p:column headerText="Identificador" >
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.value}" ></h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{row.value}"></p:inputText>         
+						</f:facet> 
+					</p:cellEditor>
+				</p:column> 
+				
+				<p:column headerText="Rechazado">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.discarded.enumValue}" /> 
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{row.discarded}">  
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listYesNo}" var="type" 
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>		
+
+				<p:column headerText="Número de usos" >
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.numberuses}" ></h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{row.numberuses}"></p:inputText>          
+						</f:facet> 
+					</p:cellEditor>
+				</p:column> 
+				
+
+			</pr:dataList> 
+
+			<pr:dataModal title="Herramienta" for="dlToolset" 
+				dataList="#{bean.detalleHerramienta}" width="430" height="240">    
+				<ui:include src="/pages/productionMgt/setup/toolset/edit.xhtml"></ui:include>  
+			</pr:dataModal>
+
+		</p:tab>
+	</p:tabView>
+
+</ui:composition>

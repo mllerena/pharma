@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+
+	<h:panelGrid columns="2">
+
+		<p:outputLabel value="Máquina:" for="acMachinei" />
+		<p:autoComplete id="acMachinei"
+									value="#{activeItem.maMachineId}"   
+									completeMethod="#{bean.completeMachine}" var="mach"
+									itemLabel="#{mach.name}" itemValue="#{mach}"
+									converter="#{maMachineConverter}" forceSelection="true" 
+									dropdown="true" emptyMessage="No hay datos para mostrar">
+									<p:ajax event="itemSelect" process="@this"></p:ajax>
+		</p:autoComplete>
+
+	</h:panelGrid>
+
+
+</ui:composition>

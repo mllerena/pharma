@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:o="http://omnifaces.org/ui">
+<f:view contentType="text/html" locale="es" />
+<ui:insert name="metadata"></ui:insert>
+<h:head>
+	<title><ui:insert name="page_title">Bodegas</ui:insert></title>
+	<!-- <link href="#{request.contextPath}/css/style.css" rel="stylesheet"
+		type="text/css" /> -->
+
+	<h:outputStylesheet name="css/style.css" />
+
+</h:head>
+<h:body>
+
+	<h:form>
+
+		<p:growl id="growlInt" autoUpdate="true" />
+
+		<pr:dataTable id="dtResult" dataTable="#{mLocatorView.dataTable}"
+			selection="#{mLocatorView.mLocator}" rowKey="#{row.id}"
+			auditable="false">
+
+			<p:column sortBy="#{row.id}" headerText="Código">
+				<h:outputText value="#{row.id}" />
+			</p:column>
+
+			<p:column sortBy="#{row.MWarehouseId.name}" headerText="Almacén">
+				<h:outputText value="#{row.MWarehouseId.name}" />
+			</p:column>
+
+			<p:column filterBy="#{row.name}" filterMatchMode="contains"
+				sortBy="#{row.name}" headerText="Nombre">
+				<h:outputText value="#{row.name}" />
+			</p:column>
+
+			<p:column headerText="Estantería (X)">
+				<h:outputText value="#{row.x}"></h:outputText>
+			</p:column>
+
+			<p:column headerText="Columna (Y)">
+				<h:outputText value="#{row.y}"></h:outputText>
+			</p:column>
+
+			<p:column headerText="Altura (Z)">
+				<h:outputText value="#{row.z}"></h:outputText>
+
+			</p:column>
+
+		</pr:dataTable>
+
+
+		<p:commandButton icon="ui-icon-plus" value="Seleccionar"
+			actionListener="#{mLocatorView.add()}" process="@this dtResult" />
+
+	</h:form>
+
+</h:body>
+</html>

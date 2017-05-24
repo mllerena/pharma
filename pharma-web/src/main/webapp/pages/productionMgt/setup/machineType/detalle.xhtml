@@ -1,0 +1,128 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui" 
+	xmlns:of="http://omnifaces.org/functions">
+
+
+
+
+	<h:panelGrid columns="4">
+
+		<p:outputLabel value="Nombre:" for="itNombreEdit" />
+		<p:inputText id="itNombreEdit" value="#{bean.currentEntity.name}"
+			required="true"
+			requiredMessage="El campo Nombre es requerido" size="50" maxlength="60">
+		</p:inputText>
+		
+		<p:outputLabel value="Descripción:" for="itDescripcionEdit" />
+		<p:inputTextarea id="itDescripcionEdit"
+			value="#{bean.currentEntity.description}" label="descripcion"
+			cols="50" rows="3" maxlength="255">
+		</p:inputTextarea>
+		
+
+
+	</h:panelGrid>
+	<br clear="all"></br>
+	
+	<p:tabView id="tvDetalles" rendered="#{bean.currentEntity.id ne null}">
+	
+		<p:tab id="tMaintenance" title="Mantenimiento">
+		
+		<pr:dataList id="dlMaintenance" dataList="#{bean.detalleMantenimiento}" 
+				rowKey="#{row.id}" title="Mantenimientos asociados"  
+				rendered="#{bean.currentEntity.id ne null}"> 
+
+				<p:column headerText="Código"> 
+					<h:outputText value="#{row.id}" />
+				</p:column>
+				
+				<p:column headerText="Nombre">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.name}" /> 
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{row.name}" />   
+						</f:facet>
+					</p:cellEditor>
+				</p:column> 
+				
+				
+				<p:column headerText="Tipo de mantenimiento" > 
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.maintenanceType.enumValue}" />   
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{row.maintenanceType}" style="width:100%;">  
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true" itemValue="#{null}"/>   
+					            <f:selectItems value="#{bean.listMaintType}"  var="type" itemLabel="#{type.enumValue}" itemValue="#{type}" />  
+					        </p:selectOneMenu>  
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				
+				<p:column headerText="Operación de Mantenimiento" >
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.maMaintOperationId.name}" />   
+						</f:facet>
+						<f:facet name="input">					        
+					        <p:autoComplete 
+								value="#{row.maMaintOperationId}" 
+								completeMethod="#{bean.completeMaintenanceOperation}" var="comp" 
+								itemLabel="#{comp.name}" itemValue="#{comp}" 
+								converter="#{maMaintOperationConverter}" forceSelection="true"    
+								dropdown="true" emptyMessage="No hay datos para mostrar"/>  
+			
+						</f:facet>
+					</p:cellEditor>
+				</p:column>  
+				
+				<p:column headerText="Tiempo esperado (Horas)">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.plannedtime}" /> 
+						</f:facet>
+						<f:facet name="input">
+							<p:spinner value="#{row.plannedtime}" />    
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column headerText="Explotar máquinas">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{row.explode.enumValue}" /> 
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{row.explode}"> 
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listYesNo}" var="type" 
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>  
+				
+				
+
+			</pr:dataList>
+
+			<pr:dataModal title="Mantenimiento" for="dlMaintenance" 
+				dataList="#{bean.detalleMantenimiento}" width="430" height="250">    
+				<ui:include src="/pages/productionMgt/setup/machineType/editMaintenance.xhtml"></ui:include>   
+			</pr:dataModal>
+
+		</p:tab>
+	</p:tabView>
+
+</ui:composition>

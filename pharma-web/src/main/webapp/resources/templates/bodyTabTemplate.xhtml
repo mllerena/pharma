@@ -1,0 +1,193 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui">
+
+
+	<pr:default var="renderedHeader" value="false" />
+
+	<pr:default var="renderedBack" value="true" />
+
+	<pr:default var="renderedNew" value="true" />
+	<pr:default var="renderedEdit" value="true" />
+	<pr:default var="renderedSave" value="true" />
+	<pr:default var="renderedDelete" value="true" />
+	<pr:default var="renderedCancel" value="false" />
+	<pr:default var="renderedProcess" value="false" />
+	<pr:default var="renderedGenerate" value="false" />
+
+
+	<pr:default var="labelBack" value="Atrás" />
+
+
+	<pr:default var="labelNew" value="Nuevo" />
+	<pr:default var="labelEdit" value="Editar" />
+
+	<pr:default var="labelSave" value="Guardar" />
+	<pr:default var="labelDelete" value="Eliminar" />
+	<pr:default var="labelCancel" value="Cancelar" />
+	<pr:default var="labelProcess" value="Procesar" />
+	<pr:default var="labelGenerate" value="Generar" />
+
+	<pr:default var="messageDelete"
+		value="¿Está seguro de eliminar el registro?" />
+
+	<pr:default var="messageCancel"
+		value="¿Está seguro de cancelar? Si continua perderá los cambios efectuados." />
+
+
+	<pr:default var="messageBack"
+		value="¿Está seguro que desea salir? Si continua perderá los cambios efectuados." />
+
+
+	<p:remoteCommand name="fnQuery#{index}" update="pgResultado"
+		actionListener="#{bean.buscar()}" />
+
+
+
+	<p:toolbar rendered="#{renderedHeader}">
+		<f:facet name="left">
+
+		</f:facet>
+		<f:facet name="right">
+			<ui:insert name="headerRight"></ui:insert>
+		</f:facet>
+	</p:toolbar>
+
+	<pe:layout fullPage="false" style="min-height: 750px;" id="lcontent">
+		<pe:layoutPane position="west" size="300" styleContent="padding: 1px;"
+			rendered="#{bean.enabledViewFilter}">
+			<p:toolbar>
+				<f:facet name="left">
+					<p:commandButton value="Buscar" icon="ui-icon-search"
+						update="lcontent" actionListener="#{bean.buscar()}" />
+
+				</f:facet>
+				<f:facet name="right">
+					<ui:insert name="extraButtonsFilter"></ui:insert>
+				</f:facet>
+			</p:toolbar>
+
+			<ui:insert name="filtro"></ui:insert>
+		</pe:layoutPane>
+		<pe:layoutPane position="center" styleContent="padding: 1px;"
+			rendered="#{bean.enabledViewFilter}">
+			<p:toolbar>
+				<f:facet name="left">
+					<p:commandButton value="#{labelNew}" icon="ui-icon-newwin"
+						update="lcontent pg_detalle" actionListener="#{bean.actionCreate}"
+						rendered="#{renderedNew}">
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+					<p:commandButton value="#{labelEdit}" icon="ui-icon-pencil"
+						update="lcontent pg_detalle" actionListener="#{bean.actionEdit}"
+						rendered="#{renderedEdit}">
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+				</f:facet>
+				<f:facet name="right">
+					<ui:insert name="extraButtonsResult"></ui:insert>
+				</f:facet>
+			</p:toolbar>
+			<h:panelGroup id="pgResultado">
+				<ui:insert name="resultado"></ui:insert>
+			</h:panelGroup>
+
+		</pe:layoutPane>
+
+		<pe:layoutPane position="center" styleContent="padding: 1px;"
+			rendered="#{bean.enabledViewDetail}" id="lpDetail">
+
+			<p:toolbar>
+				<f:facet name="left">
+					<p:commandButton value="#{labelBack}"
+						icon="ui-icon-arrowreturn-1-w" update="lcontent pg_detalle"
+						actionListener="#{bean.actionBack}" immediate="true"
+						process="@this" rendered="#{bean.enabledBack}">
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						<p:confirm header="Confirmación" message="#{messageBack}"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<span class="ui-separator"> <span
+						class="ui-icon ui-icon-grip-dotted-vertical" />
+					</span>
+
+					<p:commandButton icon="ui-icon-disk" id="cbSave"
+						process="@this lpDetail" update="lcontent pg_detalle"
+						actionListener="#{bean.actionSave}" value="#{labelSave}"
+						rendered="#{renderedSave}" />
+
+					<p:commandButton icon="ui-icon-trash" id="cbDelete"
+						process="@this lpDetail" update="lcontent"
+						actionListener="#{bean.actionDelete}" value="#{labelDelete}"
+						rendered="#{renderedDelete and bean.currentEntity.id != null}">
+						<p:confirm header="Confirmación" message="#{messageDelete}"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+
+
+
+					<p:commandButton icon="ui-icon-cancel" process="@this lpDetail"
+						update="pg_detalle" immediate="true"
+						actionListener="#{bean.actionCancel}" id="cbCancel"
+						rendered="#{renderedCancel}" value="#{labelCancel}">
+						<p:confirm header="Confirmación" message="#{messageCancel}"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-check" process="@this lpDetail"
+						update="pg_detalle" actionListener="#{bean.actionProcess}"
+						id="cbProcess" rendered="#{renderedProcess}"
+						value="#{labelProcess}" />
+
+					<p:commandButton icon="ui-icon-transferthick-e-w"
+						process="@this lpDetail" update="pg_detalle"
+						actionListener="#{bean.actionGenerate}" id="cbGenerate"
+						rendered="#{renderedGenerate}" value="#{labelGenerate}" />
+
+				</f:facet>
+				<f:facet name="right">
+					<ui:insert name="extraButtonsDetail" />
+				</f:facet>
+			</p:toolbar>
+
+			<h:panelGroup id="pg_detalle">
+
+				<p:toolbar>
+					<f:facet name="left">
+					
+					<h:panelGrid columns="2" rendered="#{bean.currentEntity.id != null}">
+						<p:outputLabel value="Código:" for="otCodigoHeader" />
+						<h:outputText id="otCodigoHeader" 
+							value="#{bean.currentEntity.id}" 
+							style="font-weight: normal !important;" /> 
+					</h:panelGrid>
+
+					</f:facet>
+					<f:facet name="right">
+						<ui:insert name="headerDetailRight"></ui:insert>
+					</f:facet>
+				</p:toolbar>
+
+
+
+				<ui:insert name="detalle"></ui:insert>
+
+			</h:panelGroup>
+
+
+
+		</pe:layoutPane>
+
+	</pe:layout>
+
+
+
+</ui:composition>

@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:o="http://omnifaces.org/ui">
+<f:view contentType="text/html" locale="es" />
+<ui:insert name="metadata"></ui:insert>
+<h:head>
+	<title><ui:insert name="page_title">Industria Farmacéutica</ui:insert></title>
+	<!-- <link href="#{request.contextPath}/css/style.css" rel="stylesheet"
+		type="text/css" /> -->
+
+	<h:outputStylesheet name="css/style.css" />
+
+	<h:outputScript name="js/hotkeys.js" />
+    
+	<h:outputScript>
+		$(document).bind('keydown', 'F9', function assets() {
+                       hotkeys();
+                       return false;
+         });
+	</h:outputScript>
+
+</h:head>
+<h:body>
+	<h:form id="fViewExpired">
+		<pe:ajaxErrorHandler
+			type="javax.faces.application.ViewExpiredException" button="Recargar"
+			buttonOnclick="document.location.href=document.location.href;"
+			body="Estimado(a), ha estado en inactividad en la página por favor presione 'Recargar' para continuar."
+			title="Página experida ..." />
+	</h:form>
+	<p:growl id="gGlobal" autoUpdate="true" escape="false" /> 
+
+	<pe:layout>
+		<pe:layoutPane position="north" size="50" closable="false">
+			<h:form id="mainMenuForm">
+				<p:menubar>
+
+					<p:menuitem value="Home" icon="ui-icon-home" process="@this"
+						actionListener="#{templateController.onSelectMenu}"
+						update=":tvTabs">
+						<f:attribute name="view" value="/pages/home.xhtml"></f:attribute>
+						<f:attribute name="title" value="Home"></f:attribute>
+					</p:menuitem>
+
+					<p:submenu label="Configuración General" icon="ui-icon-gear">
+
+						<p:menuitem icon="ui-icon-gear" value="Gestión de usuarios"
+							process="@this"
+							actionListener="#{templateController.onSelectMenu}"
+							update=":tvTabs" rendered="#{p:ifGranted('Administrador')}">
+							<f:attribute name="view"
+								value="/pages/generalSetup/security/user/content.xhtml"></f:attribute>
+							<f:attribute name="title" value="Gestión de usuarios"></f:attribute>
+							<f:attribute name="bean" value="#{adUsersController.simpleName}"></f:attribute>
+						</p:menuitem>
+
+						<p:menuitem icon="ui-icon-gear" value="Gestión de terceros"
+							process="@this"
+							actionListener="#{templateController.onSelectMenu}"
+							update=":tvTabs" rendered="#{p:ifGranted('Administrador')}">
+							<f:attribute name="view"
+								value="/pages/masterDataMgt/bPartner/content.xhtml"></f:attribute>
+							<f:attribute name="title" value="Gestión de terceros"></f:attribute>
+							<f:attribute name="bean" value="#{cBpartnerController.simpleName}"></f:attribute>
+						</p:menuitem>
+
+					</p:submenu>
+
+
+					<p:submenu label="Gestión de Almacén" icon="ui-icon-gear">
+
+						<p:submenu label="Configuración" icon="ui-icon-gear">
+
+							<p:menuitem icon="ui-icon-gear" value="Almacén y bodegas"
+								process="@this"
+								actionListener="#{templateController.onSelectMenu}"
+								update=":tvTabs" rendered="#{p:ifGranted('Administrador')}">
+								<f:attribute name="view" value="/pages/wareHouseMgt/setup/warehouse/content.xhtml"></f:attribute>
+								<f:attribute name="title" value="Almacén y huecos"></f:attribute>
+								<f:attribute name="bean" value="#{mWareHouseController.simpleName}"></f:attribute> 
+							</p:menuitem>
+
+						</p:submenu>
+						
+						<p:submenu label="Transacciones" icon="ui-icon-gear">
+
+							<p:menuitem icon="ui-icon-gear" value="Operaciones"
+								process="@this"
+								actionListener="#{templateController.onSelectMenu}"
+								update=":tvTabs" >
+								<f:attribute name="view" value="/pages/wareHouseMgt/transactions/transaction/content.xhtml"></f:attribute> 
+								<f:attribute name="title" value="Operaciones/Movimientos"></f:attribute>  
+								<f:attribute name="bean" value="#{mTransactionController.simpleName}"></f:attribute>  
+							</p:menuitem>
+
+						</p:submenu>
+
+					</p:submenu>
+
+					<p:submenu label="Gestión de Producción" icon="ui-icon-gear">
+					
+						<p:submenu label="Configuración" icon="ui-icon-gear">
+							<p:menuitem icon="ui-icon-gear" value="Áreas"
+								process="@this"
+								actionListener="#{templateController.onSelectMenu}"
+								update=":tvTabs">
+								<f:attribute name="view"
+									value="/pages/productionMgt/setup/section/content.xhtml"></f:attribute>
+								<f:attribute name="title" value="Áreas Productivas"></f:attribute>
+								<f:attribute name="bean" value="#{maSectionController.simpleName}"></f:attribute>
+							</p:menuitem>
+							
+							<p:menuitem icon="ui-icon-gear" value="Tipo de Máquina" 
+								process="@this"
+								actionListener="#{templateController.onSelectMenu}"
+								update=":tvTabs">
+								<f:attribute name="view"
+									value="/pages/productionMgt/setup/machineType/content.xhtml"></f:attribute> 
+								<f:attribute name="title" value="Tipo de Máquina"></f:attribute> 
+								<f:attribute name="bean" value="#{maMachineTypeController.simpleName}"></f:attribute>  
+							</p:menuitem>
+							
+							<p:menuitem icon="ui-icon-gear" value="Máquina"
+								process="@this"
+								actionListener="#{templateController.onSelectMenu}"
+								update=":tvTabs">
+								<f:attribute name="view"
+									value="/pages/productionMgt/setup/machine/content.xhtml"></f:attribute> 
+								<f:attribute name="title" value="Máquina"></f:attribute>
+								<f:attribute name="bean" value="#{maMachineController.simpleName}"></f:attribute>  
+							</p:menuitem>
+							
+							<p:menuitem icon="ui-icon-gear" value="Puesto Trabajo"
+								process="@this"
+								actionListener="#{templateController.onSelectMenu}"
+								update=":tvTabs">
+								<f:attribute name="view"
+									value="/pages/productionMgt/setup/workCenter/content.xhtml"></f:attribute>
+								<f:attribute name="title" value="Puesto Trabajo"></f:attribute>
+								<f:attribute name="bean" value="#{maWorkstationController.simpleName}"></f:attribute> 
+							</p:menuitem>
+							
+							<p:menuitem icon="ui-icon-gear" value="Centro de Costos"
+								process="@this"
+								actionListener="#{templateController.onSelectMenu}"
+								update=":tvTabs">
+								<f:attribute name="view"
+									value="/pages/productionMgt/setup/costCenter/content.xhtml"></f:attribute>
+								<f:attribute name="title" value="Centro de Costos"></f:attribute>
+								<f:attribute name="bean" value="#{maCostcenterController.simpleName}"></f:attribute>  
+							</p:menuitem>
+							
+							<p:menuitem icon="ui-icon-gear" value="Operación Mantenimiento" 
+								process="@this"
+								actionListener="#{templateController.onSelectMenu}"
+								update=":tvTabs">
+								<f:attribute name="view"
+									value="/pages/productionMgt/setup/maintenanceTask/content.xhtml"></f:attribute>
+								<f:attribute name="title" value="Centro de Costos"></f:attribute>
+								<f:attribute name="bean" value="#{maMaintOperationController.simpleName}"></f:attribute>  
+							</p:menuitem>
+							
+							<p:menuitem icon="ui-icon-gear" value="Herramientas" 
+								process="@this"
+								actionListener="#{templateController.onSelectMenu}"
+								update=":tvTabs">
+								<f:attribute name="view"
+									value="/pages/productionMgt/setup/toolset/content.xhtml"></f:attribute>
+								<f:attribute name="title" value="Herramientas (Utillajes)"></f:attribute>
+								<f:attribute name="bean" value="#{maToolsetTypeController.simpleName}"></f:attribute>  
+							</p:menuitem>
+							
+							<p:menuitem icon="ui-icon-gear" value="Procesos" 
+								process="@this"
+								actionListener="#{templateController.onSelectMenu}"
+								update=":tvTabs">
+								<f:attribute name="view"
+									value="/pages/productionMgt/setup/process/content.xhtml"></f:attribute>
+								<f:attribute name="title" value="Procesos (Actividades)"></f:attribute>
+								<f:attribute name="bean" value="#{maProcessController.simpleName}"></f:attribute>  
+							</p:menuitem>
+							
+							<p:menuitem icon="ui-icon-gear" value="Control Periódico" 
+								process="@this"
+								actionListener="#{templateController.onSelectMenu}"
+								update=":tvTabs">
+								<f:attribute name="view"
+									value="/pages/productionMgt/setup/periodicControl/content.xhtml"></f:attribute>
+								<f:attribute name="title" value="Control Periódico"></f:attribute>
+								<f:attribute name="bean" value="#{maPeriodicControlController.simpleName}"></f:attribute>      
+							</p:menuitem>
+							
+							<p:menuitem icon="ui-icon-gear" value="Plan producción"
+								process="@this"
+								actionListener="#{templateController.onSelectMenu}"
+								update=":tvTabs">
+								<f:attribute name="view"
+									value="/pages/productionMgt/setup/processPlan/content.xhtml"></f:attribute>
+								<f:attribute name="title" value="Plan producción"></f:attribute>
+								<f:attribute name="bean" value="#{maProcessplanController.simpleName}"></f:attribute>
+							</p:menuitem>
+							
+							
+							
+						</p:submenu>
+						
+						<p:submenu label="Transacciones" icon="ui-icon-gear">
+							<p:menuitem icon="ui-icon-gear" value="Orden de fabricación"
+								process="@this"
+								actionListener="#{templateController.onSelectMenu}"
+								update=":tvTabs">
+								<f:attribute name="view"
+									value="/pages/productionMgt/transactions/workRequirement/content.xhtml"></f:attribute>
+								<f:attribute name="title" value="Orden de fabricación"></f:attribute>
+								<f:attribute name="bean" value="#{maWorkrequirementController.simpleName}"></f:attribute>
+							</p:menuitem>
+							
+							</p:submenu>
+
+						<p:submenu label="Flujos" icon="ui-icon-gear">
+						
+							<p:menuitem icon="ui-icon-gear" value="Procesos"
+								process="@this"
+								actionListener="#{templateController.onSelectMenu}"
+								update=":tvTabs">
+								<f:attribute name="view" value="/pages/productionMgt/transactions/process/content.xhtml"></f:attribute>
+								<f:attribute name="title" value="Detalle de procesos"></f:attribute>
+								<f:attribute name="bean" value="#{processInstanceDescController.simpleName}"></f:attribute> 
+							</p:menuitem>
+							
+							
+							<p:menuitem icon="ui-icon-gear" value="Tareas"
+								process="@this"
+								actionListener="#{templateController.onSelectMenu}"
+								update=":tvTabs">
+								<f:attribute name="view" value="/pages/productionMgt/transactions/task/content.xhtml"></f:attribute>
+								<f:attribute name="title" value="Detalle de actividades"></f:attribute>
+								<f:attribute name="bean" value="#{taskSummaryController.simpleName}"></f:attribute> 
+							</p:menuitem>
+							
+						</p:submenu>
+
+
+					</p:submenu>
+
+					<f:facet name="options">
+						<h:panelGrid columns="4" cellspacing="0">
+
+							<p:commandLink type="button" id="clPerfil" process="@this">
+								<h:outputText styleClass="ui-icon ui-icon-person" />
+							</p:commandLink>
+
+							<p:commandButton
+								value="#{authenticationController.usuario != null ? authenticationController.usuario.username : 'Invitado'}"
+								icon="ui-icon-power"
+								actionListener="#{loginController.logout()}" process="@this"
+								iconPos="end" />
+						</h:panelGrid>
+					</f:facet>
+				</p:menubar>
+				<p:overlayPanel id="opPerfil" for="clPerfil" showEffect="blind"
+					hideEffect="blind" widgetVar="wvPerfil">
+
+					<p:panel header="Perfil de usuario">
+
+						<h:panelGrid columns="2" width="250">
+
+							<h:outputText value="Nombre:" />
+							<p:inputText id="nombre"
+								value="#{authenticationController.usuario.firstname} #{authenticationController.usuario.lastname}"
+								label="nombre" size="35" readonly="true" />
+
+							<h:outputText value="Usuario:" />
+							<p:inputText id="usernameNew"
+								value="#{authenticationController.usuario.username}"
+								label="Username" readonly="true" />
+							<f:facet name="footer">
+
+								<p:commandButton value="Cambiar clave" icon="ui-icon-pencil"
+									type="button"
+									onclick="PF('wvCambioClave').show();PF('wvPerfil').hide();" />
+
+							</f:facet>
+
+
+						</h:panelGrid>
+
+					</p:panel>
+
+
+				</p:overlayPanel>
+
+
+
+			</h:form>
+		</pe:layoutPane>
+		<pe:layoutPane position="center" minHeight="60" id="lpCenter">
+
+			<h:form>
+				<p:remoteCommand name="hotkeys"
+					actionListener="#{templateController.handler()}" />
+					
+			</h:form>
+
+
+			<p:tabView rendered="#{templateController.listTabs.size() > 0}"
+				id="tvTabs" widgetVar="wvTabs" dynamic="false" effect="drop"
+				binding="#{templateController.tabViewMain}" activeIndex="#{templateController.activeIndex}" >   
+
+				<p:ajax event="tabClose" listener="#{templateController.onTabClose}"
+					update="tvTabs" process="tvTabs">
+					<p:confirm header="Confirmación"
+						message="¿Está seguro que desea salir? Si continua perderá los cambios efectuados."
+						icon="ui-icon-alert" />
+				</p:ajax>
+
+				<p:ajax event="tabChange"
+					listener="#{templateController.onTabChange}" process="tvTabs" />
+
+				<c:forEach var="tab" items="#{templateController.listTabs}"
+					varStatus="loop" >
+					
+					<p:tab title="#{tab.title}" closable="#{tab.closable}" > 
+
+
+
+						<f:subview id="sv_${loop.index}">
+							<h:form id="form_${loop.index}">
+
+								<!-- <p:growl id="growlInt" autoUpdate="true"/> -->
+
+
+
+								<ui:include src="#{tab.view}">
+									<ui:param name="index" value="${loop.index}" />  
+								</ui:include>
+
+							</h:form>
+						</f:subview>
+
+
+
+
+					</p:tab>
+				</c:forEach>
+
+			</p:tabView>
+
+
+		</pe:layoutPane>
+		<pe:layoutPane position="east" size="200" resizeWhileDragging="true"
+			rendered="false">
+			East
+		</pe:layoutPane>
+		<pe:layoutPane position="south" size="30" resizable="false">
+
+
+
+
+			<h:panelGroup layout="block" style="float: right;" id="pgFace">
+
+				<p:ajaxStatus>
+					<f:facet name="default">
+
+					</f:facet>
+
+					<f:facet name="start">
+						<p:graphicImage name="/images/ajax-loader_facebook.gif" />
+					</f:facet>
+
+					<f:facet name="complete">
+
+					</f:facet>
+				</p:ajaxStatus>
+
+			</h:panelGroup>
+
+
+
+		</pe:layoutPane>
+	</pe:layout>
+
+
+	<p:ajaxStatus onstart="PF('statusDialog').show()"
+		onsuccess="PF('statusDialog').hide()" />
+
+	<p:dialog widgetVar="statusDialog" draggable="false" closable="false"
+		resizable="false" showHeader="false" modal="true" appendTo="@(body)">  
+		<p:graphicImage name="/images/ajax-loade_squared_circle.gif" />
+	</p:dialog>
+
+
+
+	<h:form id="fDialog">
+
+		<!--p:growl id="growlInt" autoUpdate="true" life="5000"/-->
+
+		<p:dialog id="dCambioClave"
+			header="Perfil de usuario - Cambio de clave"
+			widgetVar="wvCambioClave" minHeight="40" closeOnEscape="true"
+			modal="true">
+
+			<h:panelGrid columns="2" width="350">
+
+				<h:outputText value="Usuario:" />
+				<p:inputText value="#{authenticationController.usuario.username}"
+					required="true" requiredMessage="El campo Usuario es requerido"
+					label="Username" readonly="true" />
+
+				<h:outputText value="Nueva Contraseña:" />
+
+				<p:inputText id="pass1" value="#{authenticationController.pass1}"
+					required="true" requiredMessage="El campo Contraseña es requerido"
+					type="password" />
+
+				<h:outputText value="Confirmación Contraseña:" />
+
+				<p:inputText id="pass2" value="#{authenticationController.pass2}"
+					required="true"
+					requiredMessage="El campo Confirmación Contraseña es requerido"
+					type="password" />
+
+				<f:facet name="footer">
+
+					<p:commandButton value="Grabar" icon="ui-icon-disk"
+						update="pass1 pass2"
+						actionListener="#{authenticationController.actualizarUsuario()}" />
+
+				</f:facet>
+
+
+			</h:panelGrid>
+
+		</p:dialog>
+	</h:form>
+
+	<h:form id="fConfirm">
+		<p:confirmDialog global="true" closeOnEscape="true" showEffect="fade"
+			hideEffect="fade" >
+			<p:commandButton value="SI" type="button" process="@this"
+				styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="No" type="button"
+				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
+	</h:form>
+
+
+
+</h:body>
+</html>

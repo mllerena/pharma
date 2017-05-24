@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<pr:dataTable id="dtResult" dataTable="#{bean.dataTable}"
+		selection="#{bean.currentEntity}" rowKey="#{row.id}" auditable="false"> 
+
+		<p:column sortBy="#{row.id}" headerText="Código">
+			<h:outputText value="#{row.id}" />
+		</p:column>
+
+		<p:column sortBy="#{row.processName}" headerText="Nombre proceso">
+			<h:outputText value="#{row.processName}" />
+		</p:column>
+
+		<p:column sortBy="#{row.processVersion}" headerText="Versión">
+			<h:outputText value="#{row.processVersion}" />
+		</p:column>
+
+		<p:column sortBy="#{row.state}" headerText="Estado">
+			<c:choose>
+				<c:when test="${row.state == 1}">Activo</c:when>
+				<c:when test="${row.state == 2}">Completado</c:when>
+				<c:when test="${row.state == 3}">Abortado</c:when>
+				<c:otherwise>Desconocido</c:otherwise> 
+			</c:choose>
+		</p:column>
+		
+		<p:column sortBy="#{row.dataTimeStamp}" headerText="Fecha" width="130">
+			<h:outputText value="#{row.dataTimeStamp}" >
+				<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" type="both" />
+			</h:outputText>
+		</p:column>
+
+		<p:column sortBy="#{row.deploymentId}" headerText="Despliegue">
+			<h:outputText value="#{row.deploymentId}" />
+		</p:column>
+		
+		<p:column sortBy="#{row.initiator}" headerText="Iniciador">
+			<h:outputText value="#{row.initiator}" />
+		</p:column>
+
+
+	</pr:dataTable>
+
+</ui:composition>

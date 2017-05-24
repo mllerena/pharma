@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:pr="http://primefacesreload.com/jsf/tags"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+
+	<h:panelGrid columns="2">
+
+		<p:outputLabel value="Nombre:" for="itNombrei" />
+		<p:inputText id="itNombrei" value="#{activeItem.name}"
+			label="nombre" size="35">
+			<p:ajax event="change" process="@this"></p:ajax>
+		</p:inputText>
+
+
+		<p:outputLabel value="Dir. para factura:" for="somBill" />
+		<p:selectOneMenu id="somBill" value="#{activeItem.isbillto}" converter="#{yesNoConverter}">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listYesNo}" var="type" 
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+						<p:ajax event="change" process="@this"></p:ajax>
+							</p:selectOneMenu>
+
+		<p:outputLabel value="Dir. envíos:" for="somRemit" />
+		<p:selectOneMenu id="somRemit" value="#{activeItem.isremitto}" converter="#{yesNoConverter}">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listYesNo}" var="type" 
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+						<p:ajax event="change" process="@this"></p:ajax>
+							</p:selectOneMenu>
+
+		<p:outputLabel value="Dir. pago cliente:" for="somPay" />
+		<p:selectOneMenu id="somPay" value="#{activeItem.ispayfrom}" converter="#{yesNoConverter}">
+								<f:selectItem itemLabel="Seleccione" noSelectionOption="true"
+									itemValue="#{null}" />
+								<f:selectItems value="#{bean.listYesNo}" var="type" 
+									itemLabel="#{type.enumValue}" itemValue="#{type}" />
+						<p:ajax event="change" process="@this"></p:ajax>
+							</p:selectOneMenu>
+
+
+	</h:panelGrid>
+
+
+	<p:tabView id="tvPanDir">
+		<p:tab id="tDir" title="Detalle dirección">
+			<h:panelGrid columns="2">
+
+				<p:outputLabel value="Dirección 1:" for="itDir1" />
+				<p:inputText id="itDir1" value="#{activeItem.CLocationId.address1}"
+					label="direccion1" size="35">
+					<p:ajax event="change" process="@this"></p:ajax>
+				</p:inputText>
+
+				<p:outputLabel value="Dirección 2:" for="itDir2" />
+				<p:inputText id="itDir2" value="#{activeItem.CLocationId.address2}"
+					label="direccion2" size="35">
+					<p:ajax event="change" process="@this"></p:ajax>
+				</p:inputText>
+
+				<p:outputLabel value="Código Postal:" for="itCodPostal" />
+				<p:inputText id="itCodPostal"
+					value="#{activeItem.CLocationId.postal}" label="postal" size="35">
+					<p:ajax event="change" process="@this"></p:ajax>
+				</p:inputText>
+
+				<p:outputLabel value="Ciudad:" for="itCiudad" />
+				<p:inputText id="itCiudad" value="#{activeItem.CLocationId.city}"
+					label="ciudad" size="35">
+					<p:ajax event="change" process="@this"></p:ajax>
+				</p:inputText>
+
+				<p:outputLabel value="País:" for="acCountry" />
+				<p:autoComplete id="acCountry"
+					value="#{activeItem.CLocationId.CCountryId}"
+					completeMethod="#{bean.completeCountry}" var="country"
+					itemLabel="#{country.name}" itemValue="#{country}"
+					converter="#{cCountryConverter}" forceSelection="true"
+					dropdown="true" required="true"
+					requiredMessage="El campo país es obligatorio">
+					<p:ajax event="itemSelect" process="@this"></p:ajax>
+				</p:autoComplete>
+
+			</h:panelGrid>
+		</p:tab>
+	</p:tabView>
+
+
+
+
+
+
+</ui:composition>
